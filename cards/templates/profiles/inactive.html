@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile inactive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            tt: {
+                                bg: "#0b0f14",
+                                panel: "#141a23",
+                                card: "#1a232f",
+                                border: "#243041",
+                                accent: "#27d3a6",
+                                accent2: "#3ab0ff",
+                                muted: "#94a3b8",
+                            },
+                        },
+                        fontFamily: {
+                            sora: ["Sora", "sans-serif"],
+                        },
+                    },
+                },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen font-sora text-slate-100" style="background: #0b0f14;">
+<div class="mx-auto flex min-h-screen max-w-md items-center px-6">
+    <div class="w-full rounded-2xl border border-tt-border bg-tt-panel/80 p-6 text-center">
+        <h3 class="text-xl font-semibold">Inactive profile</h3>
+        <p class="mt-2 text-sm text-tt-muted">This profile is currently suspended or expired.</p>
+    </div>
+</div>
+</body>
+</html>
+
+

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Client Portal | ThinkTech BizCards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            tt: {
+                                bg: "#0b0f14",
+                                panel: "#141a23",
+                                card: "#1a232f",
+                                border: "#243041",
+                                accent: "#27d3a6",
+                                accent2: "#3ab0ff",
+                                muted: "#94a3b8",
+                            },
+                        },
+                        fontFamily: {
+                            sora: ["Sora", "sans-serif"],
+                        },
+                    },
+                },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen font-sora text-slate-100" style="background: #0b0f14;">
+<nav class="border-b border-tt-border/70 bg-tt-bg/90">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-4">
+        <a class="text-lg font-semibold" href="/client/">BizCards Portal</a>
+        <div class="flex flex-wrap gap-2">
+            <a class="rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/client/profile/">Edit profile</a>
+            <a class="rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/client/password/">Change password</a>
+            <a class="rounded-full border border-red-500/60 px-4 py-2 text-sm font-semibold text-red-300 hover:border-red-400 hover:text-red-200" href="/client/logout/">Logout</a>
+        </div>
+    </div>
+</nav>
+<main class="mx-auto max-w-6xl px-6 py-8">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="mb-4 rounded-xl border border-tt-border bg-tt-panel/80 px-4 py-3 text-sm text-tt-muted">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>
+
+

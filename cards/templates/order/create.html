@@ -1,0 +1,179 @@
+﻿{% extends "public/base.html" %}
+
+{% block content %}
+<section class="mx-auto max-w-6xl px-6">
+    <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div>
+            <h2 class="text-2xl font-semibold">Create Order</h2>
+            <p class="mt-2 text-sm text-tt-muted">Choose a package, template, and fill your profile details.</p>
+            <form method="post" class="mt-6 space-y-6">
+                {% csrf_token %}
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/70 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Customer and shipping</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Full name</label>
+                            {{ form.full_name }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Email</label>
+                            {{ form.email }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Phone</label>
+                            {{ form.phone }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Package</label>
+                            {{ form.package }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Shipping name</label>
+                            {{ form.shipping_name }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Shipping phone</label>
+                            {{ form.shipping_phone }}
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-sm text-tt-muted">Shipping address</label>
+                            {{ form.shipping_address }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/70 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Profile setup</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Template</label>
+                            {{ form.template_key }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Mode</label>
+                            {{ form.mode }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Primary</label>
+                            {{ form.primary }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Secondary</label>
+                            {{ form.secondary }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Accent</label>
+                            {{ form.accent }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Title</label>
+                            {{ form.title }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Company</label>
+                            {{ form.company }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">WhatsApp</label>
+                            {{ form.whatsapp }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Website</label>
+                            {{ form.website }}
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-sm text-tt-muted">Bio</label>
+                            {{ form.bio }}
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-sm text-tt-muted">Links (one per line)</label>
+                            {{ form.links_text }}
+                        </div>
+                    </div>
+                </div>
+
+                <button class="w-full rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-5 py-2 text-sm font-semibold text-slate-950" type="submit">Continue</button>
+            </form>
+        </div>
+        <div>
+            <div class="rounded-2xl border border-tt-border bg-tt-panel/70 p-6">
+                <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Live preview</div>
+                <div id="profile-preview" class="mt-4 rounded-2xl border border-tt-border bg-tt-card p-5" style="--primary: #0d6efd; --secondary: #1f2937; --accent: #f59e0b;">
+                    <div class="text-center">
+                        <span id="preview-template" class="inline-flex items-center rounded-full bg-[var(--accent)] px-3 py-1 text-xs font-semibold text-slate-950">Business</span>
+                        <h4 id="preview-name" class="mt-3 text-lg font-semibold">Your Name</h4>
+                        <p id="preview-title" class="text-sm text-tt-muted">Title</p>
+                        <p id="preview-company" class="text-sm text-tt-muted">Company</p>
+                    </div>
+                    <div class="mt-5 grid gap-2">
+                        <a id="preview-call" class="rounded-full bg-[var(--primary)] px-4 py-2 text-center text-sm font-semibold text-white" href="#">Call</a>
+                        <a id="preview-whatsapp" class="rounded-full border border-[var(--accent)] px-4 py-2 text-center text-sm font-semibold text-[var(--accent)]" href="#">WhatsApp</a>
+                        <a id="preview-email" class="rounded-full border border-tt-border px-4 py-2 text-center text-sm font-semibold text-slate-100" href="#">Email</a>
+                        <a id="preview-website" class="rounded-full border border-tt-border px-4 py-2 text-center text-sm font-semibold text-slate-100" href="#">Website</a>
+                    </div>
+                    <div id="preview-bio" class="mt-4 text-sm text-tt-muted">Bio preview text</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    const preview = document.getElementById("profile-preview");
+    const templateSelect = document.getElementById("id_template_key");
+    const modeSelect = document.getElementById("id_mode");
+
+    function setText(id, value, fallback) {
+        const el = document.getElementById(id);
+        if (!el) {
+            return;
+        }
+        el.textContent = value || fallback;
+    }
+
+    function toggleButton(id, show) {
+        const el = document.getElementById(id);
+        if (!el) {
+            return;
+        }
+        el.classList.toggle("hidden", !show);
+    }
+
+    function updatePreview() {
+        const templateLabel = templateSelect.options[templateSelect.selectedIndex].text;
+        document.getElementById("preview-template").textContent = templateLabel;
+
+        const fullName = document.getElementById("id_full_name").value;
+        const title = document.getElementById("id_title").value;
+        const company = document.getElementById("id_company").value;
+        const phone = document.getElementById("id_phone").value;
+        const whatsapp = document.getElementById("id_whatsapp").value;
+        const email = document.getElementById("id_email").value;
+        const website = document.getElementById("id_website").value;
+        const bio = document.getElementById("id_bio").value;
+
+        setText("preview-name", fullName, "Your Name");
+        setText("preview-title", title, "Title");
+        setText("preview-company", company, "Company");
+        setText("preview-bio", bio, "Bio preview text");
+
+        toggleButton("preview-call", Boolean(phone));
+        toggleButton("preview-whatsapp", Boolean(whatsapp || phone));
+        toggleButton("preview-email", Boolean(email));
+        toggleButton("preview-website", Boolean(website));
+
+        preview.style.setProperty("--primary", document.getElementById("id_primary").value);
+        preview.style.setProperty("--secondary", document.getElementById("id_secondary").value);
+        preview.style.setProperty("--accent", document.getElementById("id_accent").value);
+        preview.classList.toggle("bg-tt-panel", modeSelect.value === "dark");
+    }
+
+    document.querySelectorAll("input, select, textarea").forEach((el) => {
+        el.addEventListener("input", updatePreview);
+        el.addEventListener("change", updatePreview);
+    });
+
+    updatePreview();
+</script>
+{% endblock %}
+
+

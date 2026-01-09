@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ThinkTech BizCards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            tt: {
+                                bg: "#0b0f14",
+                                panel: "#141a23",
+                                card: "#1a232f",
+                                border: "#243041",
+                                accent: "#27d3a6",
+                                accent2: "#3ab0ff",
+                                muted: "#94a3b8",
+                            },
+                        },
+                        fontFamily: {
+                            sora: ["Sora", "sans-serif"],
+                        },
+                    },
+                },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+</head>
+<body class="min-h-screen font-sora text-slate-100" style="background: radial-gradient(1200px circle at 12% -10%, rgba(39, 211, 166, 0.18), transparent 60%), radial-gradient(900px circle at 90% -20%, rgba(58, 176, 255, 0.15), transparent 55%), #0b0f14;">
+<nav class="sticky top-0 z-40 border-b border-tt-border/70 bg-tt-bg/80 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a class="text-lg font-semibold tracking-wide" href="/">ThinkTech BizCards</a>
+        <div class="flex items-center gap-3">
+            <a class="rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-tt-accent hover:text-tt-accent" href="/client/login/">Client portal</a>
+            <a class="rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:from-tt-accent/90 hover:to-tt-accent2/90" href="/order/">Create order</a>
+        </div>
+    </div>
+</nav>
+<main class="pb-16 pt-8">
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>
+
+

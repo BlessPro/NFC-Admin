@@ -1,0 +1,47 @@
+﻿body { background: #f1f5f9; }
+.sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 20px;
+}
+.sidebar-header {
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+.sidebar .nav-link {
+    color: #cbd5f5;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+}
+.sidebar .nav-link.active,
+.sidebar .nav-link:hover {
+    background: #1e293b;
+    color: #ffffff;
+}
+.topbar {
+    background: #111827;
+    color: #e2e8f0;
+    padding: 16px 24px;
+}
+.card-metric { border: none; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08); }
+.preview-card {
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    --primary: #0d6efd;
+    --secondary: #1f2937;
+    --accent: #f59e0b;
+}
+.preview-card.theme-dark {
+    background: #0f172a;
+    color: #e2e8f0;
+}
+.preview-card .badge { background: var(--accent); }
+.preview-card .btn-primary { background: var(--primary); border-color: var(--primary); }
+.preview-card .btn-outline-accent { border-color: var(--accent); color: var(--accent); }
+.preview-card .text-muted { color: #6b7280 !important; }
+.preview-card.theme-dark .text-muted { color: #94a3b8 !important; }

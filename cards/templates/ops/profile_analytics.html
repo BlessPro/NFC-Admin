@@ -1,0 +1,48 @@
+﻿{% extends "ops/base.html" %}
+
+{% block content %}
+<h3 class="text-2xl font-semibold">Analytics: {{ profile.customer.full_name }}</h3>
+<div class="mt-6 grid gap-4 md:grid-cols-3">
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Total visits</div>
+        <div class="mt-2 text-2xl font-semibold">{{ total_visits }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Total actions</div>
+        <div class="mt-2 text-2xl font-semibold">{{ total_actions }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Conversion rate</div>
+        <div class="mt-2 text-2xl font-semibold">{{ conversion_rate|floatformat:2 }}</div>
+    </div>
+</div>
+
+<div class="mt-6 grid gap-4 lg:grid-cols-2">
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Visits by day</div>
+        <div class="mt-4 space-y-2 text-sm">
+            {% for row in visits_by_day %}
+            <div class="flex items-center justify-between rounded-xl border border-tt-border/60 bg-tt-card px-3 py-2">
+                <span>{{ row.day }}</span>
+                <span class="text-tt-accent">{{ row.total }}</span>
+            </div>
+            {% empty %}
+            <div class="text-sm text-tt-muted">No visits yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Actions breakdown</div>
+        <div class="mt-4 space-y-2 text-sm">
+            {% for row in actions_breakdown %}
+            <div class="flex items-center justify-between rounded-xl border border-tt-border/60 bg-tt-card px-3 py-2">
+                <span>{{ row.action_type }}</span>
+                <span class="text-tt-accent">{{ row.total }}</span>
+            </div>
+            {% empty %}
+            <div class="text-sm text-tt-muted">No actions yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

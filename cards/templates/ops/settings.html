@@ -1,0 +1,35 @@
+﻿{% extends "ops/base.html" %}
+
+{% block content %}
+<h3 class="text-2xl font-semibold">Settings</h3>
+<div class="mt-6 rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+    <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Packages</div>
+    <div class="mt-4 overflow-x-auto">
+        <table class="min-w-full text-sm">
+            <thead class="border-b border-tt-border/60 text-left text-xs uppercase tracking-[0.2em] text-tt-muted">
+                <tr>
+                    <th class="px-3 py-2">Package</th>
+                    <th class="px-3 py-2">Price (GHS)</th>
+                    <th class="px-3 py-2">Cards</th>
+                    <th class="px-3 py-2">Edits included</th>
+                    <th class="px-3 py-2">Analytics</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, pkg in packages.items %}
+                <tr class="border-b border-tt-border/40">
+                    <td class="px-3 py-2 font-semibold">{{ pkg.label }}</td>
+                    <td class="px-3 py-2 text-tt-muted">{{ pkg.price }}</td>
+                    <td class="px-3 py-2 text-tt-muted">{{ pkg.card_quantity }}</td>
+                    <td class="px-3 py-2 text-tt-muted">{% if pkg.edits_included is None %}Unlimited{% else %}{{ pkg.edits_included }}{% endif %}</td>
+                    <td class="px-3 py-2 text-tt-muted">{{ pkg.analytics }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4 text-sm text-tt-muted">
+        Hosting price: GHS {{ hosting_price }} per year (billed yearly)
+    </div>
+</div>
+{% endblock %}

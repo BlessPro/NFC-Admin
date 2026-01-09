@@ -1,0 +1,71 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin | ThinkTech BizCards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            tt: {
+                                bg: "#0b0f14",
+                                panel: "#141a23",
+                                card: "#1a232f",
+                                border: "#243041",
+                                accent: "#27d3a6",
+                                accent2: "#3ab0ff",
+                                muted: "#94a3b8",
+                            },
+                        },
+                        fontFamily: {
+                            sora: ["Sora", "sans-serif"],
+                        },
+                    },
+                },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen font-sora text-slate-100" style="background: #0b0f14;">
+<div class="min-h-screen lg:flex">
+    <aside class="hidden w-64 flex-col border-r border-tt-border bg-tt-panel/90 p-6 lg:flex">
+        <div class="text-lg font-semibold">ThinkTech BizCards</div>
+        <nav class="mt-8 space-y-2 text-sm">
+            <a class="block rounded-xl px-3 py-2 font-semibold {% if active_nav == 'dashboard' %}bg-tt-card text-tt-accent{% else %}text-slate-200 hover:bg-tt-card{% endif %}" href="/admin/">Dashboard</a>
+            <a class="block rounded-xl px-3 py-2 font-semibold {% if active_nav == 'customers' %}bg-tt-card text-tt-accent{% else %}text-slate-200 hover:bg-tt-card{% endif %}" href="/admin/customers/">Customers</a>
+            <a class="block rounded-xl px-3 py-2 font-semibold {% if active_nav == 'profiles' %}bg-tt-card text-tt-accent{% else %}text-slate-200 hover:bg-tt-card{% endif %}" href="/admin/profiles/">Profiles</a>
+            <a class="block rounded-xl px-3 py-2 font-semibold {% if active_nav == 'orders' %}bg-tt-card text-tt-accent{% else %}text-slate-200 hover:bg-tt-card{% endif %}" href="/admin/orders/">Orders</a>
+            <a class="block rounded-xl px-3 py-2 font-semibold {% if active_nav == 'analytics' %}bg-tt-card text-tt-accent{% else %}text-slate-200 hover:bg-tt-card{% endif %}" href="/admin/analytics/">Analytics</a>
+            <a class="block rounded-xl px-3 py-2 font-semibold {% if active_nav == 'renewals' %}bg-tt-card text-tt-accent{% else %}text-slate-200 hover:bg-tt-card{% endif %}" href="/admin/renewals/">Renewals</a>
+            <a class="block rounded-xl px-3 py-2 font-semibold {% if active_nav == 'settings' %}bg-tt-card text-tt-accent{% else %}text-slate-200 hover:bg-tt-card{% endif %}" href="/admin/settings/">Settings</a>
+        </nav>
+    </aside>
+    <div class="flex min-h-screen flex-1 flex-col">
+        <header class="border-b border-tt-border bg-tt-panel/70">
+            <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+                <div class="text-sm uppercase tracking-[0.2em] text-tt-muted">Operations Dashboard</div>
+                <div class="flex items-center gap-3 text-sm">
+                    <span class="text-tt-muted">{{ request.user.username }}</span>
+                    <a class="rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/admin/logout/">Logout</a>
+                </div>
+            </div>
+        </header>
+        <main class="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="mb-4 rounded-xl border border-tt-border bg-tt-panel/80 px-4 py-3 text-sm text-tt-muted">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</div>
+</body>
+</html>
+
+

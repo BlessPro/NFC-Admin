@@ -1,0 +1,14 @@
+﻿{% extends "public/base.html" %}
+
+{% block content %}
+<section class="mx-auto max-w-3xl px-6">
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/70 p-6">
+        <h3 class="text-2xl font-semibold">Your digital card is live.</h3>
+        <p class="mt-2 text-sm text-tt-muted">We will contact you on WhatsApp for delivery.</p>
+        <p class="mt-4 text-sm text-tt-muted">NFC link:</p>
+        <div class="mt-2 rounded-xl border border-tt-border bg-tt-card px-4 py-3">
+            <a class="text-sm text-tt-accent" href="{{ profile.public_url }}">https://mybusiness.thinktechbizcards.com{{ profile.public_url }}</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

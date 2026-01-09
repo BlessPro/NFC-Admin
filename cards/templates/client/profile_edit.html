@@ -1,0 +1,1218 @@
+{% extends "client/base.html" %}
+
+{% block content %}
+<div class="grid gap-8 lg:grid-cols-[0.45fr_0.55fr]">
+    <div class="lg:sticky lg:top-24">
+        <div class="rounded-3xl border border-tt-border bg-tt-panel/80 p-5">
+            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Mobile preview</div>
+            <div class="mt-4 w-full max-w-[414px]">
+                <div class="relative w-full overflow-hidden rounded-[2.5rem] border border-tt-border bg-tt-card shadow-[0_25px_60px_rgba(0,0,0,0.55)]" style="aspect-ratio: 414 / 896;">
+                    <div id="preview-body" class="preview-body flex h-full flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-[2.2rem] p-4" style="--primary: {{ theme.primary|default:'#0d6efd' }}; --accent: {{ theme.accent|default:'#f59e0b' }}; --wallpaper: {{ theme.wallpaper|default:'linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)' }}; --text-color: {{ theme.text_color|default:'#f8fafc' }}; --muted-color: rgba(248, 250, 252, 0.7); --button-bg: {{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}; --button-text: {{ theme.button_text|default:'#0b0f14' }}; --button-radius: {{ theme.button_radius|default:'100' }}%; --button-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); --font-header: {{ theme.header_font|default:"'Sora', sans-serif" }}; --font-links: {{ theme.link_font|default:"'Sora', sans-serif" }}; --font-bio: {{ theme.bio_font|default:"'Sora', sans-serif" }}; --name-size: {{ theme.name_size|default:'1.125rem' }}; --bio-size: {{ theme.bio_size|default:'0.75rem' }};">
+                        <div id="preview-header" class="relative h-32 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5">
+                            <img id="preview-header-image" class="h-full w-full object-cover {% if not profile.logo %}hidden{% endif %}" src="{% if profile.logo %}{{ profile.logo.url }}{% endif %}" alt="Header" />
+                            <div id="preview-header-text" class="preview-header-text absolute inset-0 flex items-center justify-center px-4 text-center text-lg font-semibold text-white {% if profile.logo %}hidden{% endif %}">Your headline</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="relative mx-auto h-16 w-16">
+                                <img id="preview-avatar-image" class="hidden h-16 w-16 rounded-full border border-white/20 object-cover" alt="Avatar" />
+                                <div id="preview-avatar" class="flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sm font-semibold" style="border-color: var(--accent); color: var(--accent);">TT</div>
+                            </div>
+                            <h4 id="preview-name" class="mt-3 font-semibold" style="color: var(--text-color); font-size: var(--name-size, 1.125rem); font-family: var(--font-header);">{{ content.full_name|default:profile.customer.full_name }}</h4>
+                            <p id="preview-title" class="text-xs" style="color: var(--muted-color);">{{ content.title }}</p>
+                            <p id="preview-company" class="text-xs" style="color: var(--muted-color);">{{ content.company }}</p>
+                            <p id="preview-bio" class="preview-bio mt-2" style="color: var(--muted-color); font-size: var(--bio-size, 0.75rem);">{{ content.bio }}</p>
+                        </div>
+                        <div class="space-y-3 text-sm" id="preview-actions">
+                            <a id="preview-call" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">Call</a>
+                            <a id="preview-whatsapp" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">WhatsApp</a>
+                            <a id="preview-email" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">Email</a>
+                            <a id="preview-website" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">Website</a>
+                        </div>
+                        <div class="space-y-2 text-sm" id="preview-links">
+                            {% if content.links %}
+                                {% for link in content.links %}
+                                <div class="preview-btn solid block px-4 py-2 text-center font-semibold">{{ link.label|default:link.url }}</div>
+                                {% endfor %}
+                            {% else %}
+                            <div class="preview-btn outline block px-4 py-2 text-center text-xs font-semibold">Add your first link</div>
+                            {% endif %}
+                        </div>
+                        <div id="preview-footer" class="mt-auto pt-2 text-center text-[10px] uppercase tracking-[0.2em]" style="color: var(--muted-color);">Made by 10minal</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .preview-body {
+            background: var(--wallpaper);
+            color: var(--text-color);
+            font-family: var(--font-links);
+            background-size: cover;
+            background-position: center;
+        }
+        .preview-header-text {
+            font-family: var(--font-header);
+        }
+        .preview-bio {
+            font-family: var(--font-bio);
+        }
+        .preview-btn {
+            border-radius: var(--button-radius);
+            box-shadow: var(--button-shadow);
+            font-family: var(--font-links);
+        }
+        .preview-btn.solid {
+            background: var(--button-bg);
+            color: var(--button-text);
+            border: 1px solid transparent;
+        }
+        .preview-btn.outline {
+            background: transparent;
+            border: 1px solid var(--button-bg);
+            color: var(--button-bg);
+        }
+        .preview-btn.glass {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--button-text);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+            <div class="flex flex-wrap gap-2">
+                <button type="button" class="tab-button rounded-full bg-tt-card px-4 py-2 text-sm font-semibold text-tt-accent" data-tab="profile">Profile</button>
+                <button type="button" class="tab-button rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-tab="links">Links</button>
+                <button type="button" class="tab-button rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-tab="design">Design</button>
+            </div>
+        </div>
+
+        <section data-panel="profile" class="space-y-6">
+            <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Personal details</h3>
+                <div class="mt-4 grid gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="text-sm text-tt-muted">Full name</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div>
+                        <label class="text-sm text-tt-muted">Title</label>
+                        {{ form.title }}
+                    </div>
+                    <div>
+                        <label class="text-sm text-tt-muted">Company</label>
+                        {{ form.company }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Contact & login</h3>
+                <div class="mt-4 grid gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="text-sm text-tt-muted">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                    <div>
+                        <label class="text-sm text-tt-muted">WhatsApp</label>
+                        {{ form.whatsapp }}
+                    </div>
+                    <div>
+                        <label class="text-sm text-tt-muted">Email (login)</label>
+                        {{ form.email }}
+                    </div>
+                    <div>
+                        <label class="text-sm text-tt-muted">Website</label>
+                        {{ form.website }}
+                    </div>
+                </div>
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-tt-border bg-tt-card/60 px-4 py-3 text-xs text-tt-muted">
+                    <span>Need to change your password?</span>
+                    <a class="rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/client/password/">Update password</a>
+                </div>
+            </div>
+
+            <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Bio</h3>
+                <div class="mt-4">
+                    {{ form.bio }}
+                </div>
+            </div>
+        </section>
+
+        <section data-panel="links" class="hidden space-y-6">
+            <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Your links</h3>
+                <p class="mt-2 text-sm text-tt-muted">Paste a link and we will label it automatically. Keep adding to build a Linktree-style list.</p>
+                <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                    <button id="add-link" type="button" class="rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-4 py-2 text-sm font-semibold text-slate-950">Add link</button>
+                    <span class="text-xs text-tt-muted">Paste a link and we will detect the platform.</span>
+                </div>
+                <div id="links-list" class="mt-6 space-y-3"></div>
+            </div>
+        </section>
+
+        <section data-panel="design" class="hidden space-y-6">
+            <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+                <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                    <button type="button" class="design-tab rounded-full bg-tt-card px-4 py-2 text-tt-accent" data-design-tab="header">Header</button>
+                    <button type="button" class="design-tab rounded-full border border-tt-border px-4 py-2 text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-design-tab="theme">Theme</button>
+                    <button type="button" class="design-tab rounded-full border border-tt-border px-4 py-2 text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-design-tab="templates">Templates</button>
+                    <button type="button" class="design-tab rounded-full border border-tt-border px-4 py-2 text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-design-tab="wallpaper">Wallpaper</button>
+                    <button type="button" class="design-tab rounded-full border border-tt-border px-4 py-2 text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-design-tab="text">Text</button>
+                    <button type="button" class="design-tab rounded-full border border-tt-border px-4 py-2 text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-design-tab="buttons">Buttons</button>
+                    <button type="button" class="design-tab rounded-full border border-tt-border px-4 py-2 text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-design-tab="footer">Footer</button>
+                </div>
+            </div>
+
+            <section data-design-panel="header" class="space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Header</h3>
+                    <p class="mt-2 text-sm text-tt-muted">Choose an image header or a custom headline.</p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button type="button" class="header-mode rounded-full bg-tt-card px-4 py-2 text-sm font-semibold text-tt-accent" data-header-mode="image">Image</button>
+                        <button type="button" class="header-mode rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-header-mode="text">Text</button>
+                    </div>
+                    <div id="header-image-controls" class="mt-4">
+                        <label class="text-sm text-tt-muted">Header image</label>
+                        {{ form.logo }}
+                        <p class="mt-2 text-xs text-tt-muted">Upload an image to use as the cover.</p>
+                    </div>
+                    <div id="header-text-controls" class="mt-4 hidden">
+                        <label class="text-sm text-tt-muted">Header text</label>
+                        <input id="header-text-input" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="{{ theme.header_text|default:content.company|default:content.full_name|default:'Your headline' }}" />
+                    </div>
+                    <div class="mt-4">
+                        <label class="text-sm text-tt-muted">Header font</label>
+                        <select id="header-font" class="w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40">
+                            <option value="'Sora', sans-serif">Sora</option>
+                            <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                            <option value="'Manrope', sans-serif">Manrope</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section data-design-panel="theme" class="hidden space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Theme</h3>
+                    <p class="mt-2 text-sm text-tt-muted">Pick a preset theme or fine tune the palette.</p>
+                    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#7C3AED" data-accent="#F472B6" data-text="#F8FAFC" data-wallpaper="linear-gradient(180deg, #4C1D95 0%, #0F172A 100%)" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Manrope', sans-serif">
+                            <div class="relative h-24 rounded-xl bg-gradient-to-br from-purple-600 via-fuchsia-500 to-slate-900">
+                                <div class="absolute bottom-3 left-3 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">Agate</div>
+                            </div>
+                        </button>
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#22D3EE" data-accent="#A5F3FC" data-text="#0F172A" data-wallpaper="linear-gradient(180deg, #E2E8F0 0%, #BAE6FD 100%)" data-link-font="'Sora', sans-serif" data-bio-font="'Playfair Display', serif">
+                            <div class="relative h-24 rounded-xl bg-gradient-to-br from-sky-200 via-white to-cyan-200">
+                                <div class="absolute bottom-3 left-3 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold text-white">Air</div>
+                            </div>
+                        </button>
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#F97316" data-accent="#FDBA74" data-text="#F8FAFC" data-wallpaper="linear-gradient(180deg, #7F1D1D 0%, #0F172A 100%)" data-link-font="'Manrope', sans-serif" data-bio-font="'Sora', sans-serif">
+                            <div class="relative h-24 rounded-xl bg-gradient-to-br from-rose-700 via-orange-500 to-slate-900">
+                                <div class="absolute bottom-3 left-3 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">Astrid</div>
+                            </div>
+                        </button>
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#22C55E" data-accent="#86EFAC" data-text="#F8FAFC" data-wallpaper="linear-gradient(180deg, #064E3B 0%, #0B0F14 100%)" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Playfair Display', serif">
+                            <div class="relative h-24 rounded-xl bg-gradient-to-br from-emerald-700 via-teal-600 to-slate-900">
+                                <div class="absolute bottom-3 left-3 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">Aura</div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="mt-6 grid gap-4 sm:grid-cols-3">
+                        <div>
+                            <label class="text-sm text-tt-muted">Primary</label>
+                            <input id="theme-primary" type="color" class="mt-2 h-10 w-16 rounded-lg border border-slate-700 bg-slate-900/70 p-1" value="{{ theme.primary|default:'#27d3a6' }}" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Accent</label>
+                            <input id="theme-accent" type="color" class="mt-2 h-10 w-16 rounded-lg border border-slate-700 bg-slate-900/70 p-1" value="{{ theme.accent|default:'#f59e0b' }}" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Text</label>
+                            <input id="theme-text" type="color" class="mt-2 h-10 w-16 rounded-lg border border-slate-700 bg-slate-900/70 p-1" value="{{ theme.text_color|default:'#f8fafc' }}" />
+                        </div>
+                    </div>
+                    <div class="mt-6 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Links font</label>
+                            <select id="link-font" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40">
+                                <option value="'Sora', sans-serif">Sora</option>
+                                <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+                                <option value="'Playfair Display', serif">Playfair Display</option>
+                                <option value="'Manrope', sans-serif">Manrope</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Bio font</label>
+                            <select id="bio-font" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40">
+                                <option value="'Sora', sans-serif">Sora</option>
+                                <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+                                <option value="'Playfair Display', serif">Playfair Display</option>
+                                <option value="'Manrope', sans-serif">Manrope</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section data-design-panel="templates" class="hidden space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Templates</h3>
+                    <p class="mt-2 text-sm text-tt-muted">Business is active. More layouts coming soon.</p>
+                    <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                        <div class="rounded-2xl border border-tt-accent/60 bg-tt-card/80 p-4">
+                            <div class="text-sm font-semibold text-tt-accent">Business</div>
+                            <div class="mt-2 text-xs text-tt-muted">Active template</div>
+                        </div>
+                        <div class="rounded-2xl border border-dashed border-tt-border p-4 text-sm text-tt-muted">Portfolio (coming soon)</div>
+                        <div class="rounded-2xl border border-dashed border-tt-border p-4 text-sm text-tt-muted">Music (coming soon)</div>
+                        <div class="rounded-2xl border border-dashed border-tt-border p-4 text-sm text-tt-muted">Restaurant (coming soon)</div>
+                    </div>
+                </div>
+            </section>
+
+            <section data-design-panel="wallpaper" class="hidden space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Wallpaper</h3>
+                    <p class="mt-2 text-sm text-tt-muted">Choose a background color, gradient, or image.</p>
+                    <div class="mt-4 grid gap-3 sm:grid-cols-2">
+                        <button type="button" class="wallpaper-choice rounded-2xl border border-tt-border p-4 text-left" data-wallpaper="linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)">
+                            <div class="h-16 rounded-xl bg-gradient-to-b from-slate-900 to-slate-950"></div>
+                            <div class="mt-2 text-xs font-semibold text-slate-100">Midnight</div>
+                        </button>
+                        <button type="button" class="wallpaper-choice rounded-2xl border border-tt-border p-4 text-left" data-wallpaper="linear-gradient(180deg, #1f2937 0%, #111827 100%)">
+                            <div class="h-16 rounded-xl bg-gradient-to-b from-slate-800 to-slate-900"></div>
+                            <div class="mt-2 text-xs font-semibold text-slate-100">Carbon</div>
+                        </button>
+                        <button type="button" class="wallpaper-choice rounded-2xl border border-tt-border p-4 text-left" data-wallpaper="linear-gradient(180deg, #0f766e 0%, #0b0f14 100%)">
+                            <div class="h-16 rounded-xl bg-gradient-to-b from-teal-600 to-slate-950"></div>
+                            <div class="mt-2 text-xs font-semibold text-slate-100">Verdant</div>
+                        </button>
+                        <button type="button" class="wallpaper-choice rounded-2xl border border-tt-border p-4 text-left" data-wallpaper="linear-gradient(180deg, #312e81 0%, #0b0f14 100%)">
+                            <div class="h-16 rounded-xl bg-gradient-to-b from-indigo-700 to-slate-950"></div>
+                            <div class="mt-2 text-xs font-semibold text-slate-100">Indigo</div>
+                        </button>
+                    </div>
+                    <div class="mt-6 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Custom color</label>
+                            <input id="wallpaper-color" type="color" class="mt-2 h-10 w-16 rounded-lg border border-slate-700 bg-slate-900/70 p-1" value="#0b0f14" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Gradient</label>
+                            <select id="wallpaper-gradient" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40">
+                                <option value="">Choose gradient</option>
+                                <option value="linear-gradient(135deg, #0ea5e9 0%, #22c55e 100%)">Skyline</option>
+                                <option value="linear-gradient(135deg, #f43f5e 0%, #f97316 100%)">Sunset</option>
+                                <option value="linear-gradient(135deg, #a855f7 0%, #06b6d4 100%)">Aurora</option>
+                                <option value="linear-gradient(135deg, #111827 0%, #0f172a 100%)">Stealth</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="text-sm text-tt-muted">Upload image</label>
+                            <input id="wallpaper-upload" type="file" accept="image/*" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 file:mr-4 file:rounded-full file:border-0 file:bg-tt-accent file:px-4 file:py-2 file:text-xs file:font-semibold file:text-slate-950" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section data-design-panel="text" class="hidden space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Text</h3>
+                    <p class="mt-2 text-sm text-tt-muted">Adjust fonts and sizing for your content.</p>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Name size</label>
+                            <select id="name-size" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40">
+                                <option value="1rem">Small</option>
+                                <option value="1.125rem" selected>Medium</option>
+                                <option value="1.25rem">Large</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Bio size</label>
+                            <select id="bio-size" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40">
+                                <option value="0.7rem">Small</option>
+                                <option value="0.75rem" selected>Medium</option>
+                                <option value="0.85rem">Large</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section data-design-panel="buttons" class="hidden space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Buttons</h3>
+                    <p class="mt-2 text-sm text-tt-muted">Choose button style, corners, and shadow.</p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button type="button" class="button-style rounded-full bg-tt-card px-4 py-2 text-sm font-semibold text-tt-accent" data-button-style="solid">Solid</button>
+                        <button type="button" class="button-style rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-style="glass">Glass</button>
+                        <button type="button" class="button-style rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-style="outline">Outline</button>
+                    </div>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="flex items-center justify-between text-sm text-tt-muted">
+                                Corners
+                                <span id="button-radius-value" class="text-xs text-slate-100">100%</span>
+                            </label>
+                            <input id="button-radius" type="range" min="0" max="100" value="{{ theme.button_radius|default:'100' }}" class="mt-2 w-full" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Shadow</label>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <button type="button" class="button-shadow rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-shadow="none">None</button>
+                                <button type="button" class="button-shadow rounded-full bg-tt-card px-3 py-1 text-xs font-semibold text-tt-accent" data-button-shadow="subtle">Subtle</button>
+                                <button type="button" class="button-shadow rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-shadow="strong">Strong</button>
+                                <button type="button" class="button-shadow rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-shadow="hard">Hard</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Button color</label>
+                            <input id="button-bg" type="color" class="mt-2 h-10 w-16 rounded-lg border border-slate-700 bg-slate-900/70 p-1" value="{{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}" />
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Text color</label>
+                            <input id="button-text" type="color" class="mt-2 h-10 w-16 rounded-lg border border-slate-700 bg-slate-900/70 p-1" value="{{ theme.button_text|default:'#0b0f14' }}" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section data-design-panel="footer" class="hidden space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Footer</h3>
+                    <p class="mt-2 text-sm text-tt-muted">Footer shows by default as "Made by 10minal".</p>
+                    <div class="mt-4 flex items-center gap-3 text-sm text-slate-100">
+                        <input id="footer-toggle" type="checkbox" class="h-4 w-4 rounded border-slate-700 bg-slate-900 text-tt-accent focus:ring-tt-accent/40" {% if theme.footer_show|default:True %}checked{% endif %} />
+                        <label for="footer-toggle">Show footer</label>
+                    </div>
+                    <div class="mt-4">
+                        <label class="text-sm text-tt-muted">Footer text</label>
+                        <input id="footer-text" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="{{ theme.footer_text|default:'Made by 10minal' }}" />
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+            <button class="w-full rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-6 py-2 text-sm font-semibold text-slate-950" type="submit">Save changes</button>
+        </div>
+
+        <div class="hidden">
+            {{ form.links_text }}
+            {{ form.layout }}
+            {{ form.header_mode }}
+            {{ form.header_text }}
+            {{ form.header_font }}
+            {{ form.link_font }}
+            {{ form.bio_font }}
+            {{ form.name_size }}
+            {{ form.bio_size }}
+            {{ form.wallpaper }}
+            {{ form.text_color }}
+            {{ form.button_style }}
+            {{ form.button_radius }}
+            {{ form.button_shadow }}
+            {{ form.button_bg }}
+            {{ form.button_text }}
+            {{ form.footer_text }}
+            {{ form.footer_show }}
+            {{ form.primary }}
+            {{ form.accent }}
+        </div>
+    </form>
+</div>
+
+<script>
+    const tabButtons = document.querySelectorAll("[data-tab]");
+    const panels = document.querySelectorAll("[data-panel]");
+
+    function setActiveTab(name) {
+        panels.forEach((panel) => {
+            panel.classList.toggle("hidden", panel.dataset.panel !== name);
+        });
+        tabButtons.forEach((btn) => {
+            const isActive = btn.dataset.tab === name;
+            btn.classList.toggle("bg-tt-card", isActive);
+            btn.classList.toggle("text-tt-accent", isActive);
+            btn.classList.toggle("text-slate-100", !isActive);
+            btn.classList.toggle("border", !isActive);
+            btn.classList.toggle("border-tt-border", !isActive);
+        });
+    }
+
+    document.addEventListener("click", (event) => {
+        const btn = event.target.closest("[data-tab]");
+        if (!btn) {
+            return;
+        }
+        event.preventDefault();
+        setActiveTab(btn.dataset.tab);
+    });
+    setActiveTab("profile");
+
+    const designTabs = document.querySelectorAll("[data-design-tab]");
+    const designPanels = document.querySelectorAll("[data-design-panel]");
+
+    function setDesignTab(name) {
+        designPanels.forEach((panel) => {
+            panel.classList.toggle("hidden", panel.dataset.designPanel !== name);
+        });
+        designTabs.forEach((btn) => {
+            const isActive = btn.dataset.designTab === name;
+            btn.classList.toggle("bg-tt-card", isActive);
+            btn.classList.toggle("text-tt-accent", isActive);
+            btn.classList.toggle("text-slate-100", !isActive);
+            btn.classList.toggle("border", !isActive);
+            btn.classList.toggle("border-tt-border", !isActive);
+        });
+    }
+
+    document.addEventListener("click", (event) => {
+        const btn = event.target.closest("[data-design-tab]");
+        if (!btn) {
+            return;
+        }
+        event.preventDefault();
+        setDesignTab(btn.dataset.designTab);
+    });
+    setDesignTab("header");
+
+    const previewBody = document.getElementById("preview-body");
+    const previewHeaderImage = document.getElementById("preview-header-image");
+    const previewHeaderText = document.getElementById("preview-header-text");
+    const previewAvatar = document.getElementById("preview-avatar");
+    const previewAvatarImage = document.getElementById("preview-avatar-image");
+    const previewFooter = document.getElementById("preview-footer");
+    const layoutField = document.getElementById("id_layout");
+    const headerModeField = document.getElementById("id_header_mode");
+    const headerTextField = document.getElementById("id_header_text");
+    const headerFontField = document.getElementById("id_header_font");
+    const linkFontField = document.getElementById("id_link_font");
+    const bioFontField = document.getElementById("id_bio_font");
+    const nameSizeField = document.getElementById("id_name_size");
+    const bioSizeField = document.getElementById("id_bio_size");
+    const wallpaperField = document.getElementById("id_wallpaper");
+    const textColorField = document.getElementById("id_text_color");
+    const buttonStyleField = document.getElementById("id_button_style");
+    const buttonRadiusField = document.getElementById("id_button_radius");
+    const buttonShadowField = document.getElementById("id_button_shadow");
+    const buttonBgField = document.getElementById("id_button_bg");
+    const buttonTextField = document.getElementById("id_button_text");
+    const footerTextField = document.getElementById("id_footer_text");
+    const footerShowField = document.getElementById("id_footer_show");
+    const primaryField = document.getElementById("id_primary");
+    const accentField = document.getElementById("id_accent");
+
+    if (layoutField && !layoutField.value) {
+        layoutField.value = "linktree";
+    }
+
+    const headerModeButtons = document.querySelectorAll("[data-header-mode]");
+    const headerImageControls = document.getElementById("header-image-controls");
+    const headerTextControls = document.getElementById("header-text-controls");
+    const headerTextInput = document.getElementById("header-text-input");
+    const headerFontSelect = document.getElementById("header-font");
+    const logoInput = document.getElementById("id_logo");
+
+    const linkFontSelect = document.getElementById("link-font");
+    const bioFontSelect = document.getElementById("bio-font");
+    const nameSizeSelect = document.getElementById("name-size");
+    const bioSizeSelect = document.getElementById("bio-size");
+
+    const themeCards = document.querySelectorAll("[data-theme-card]");
+    const themePrimaryInput = document.getElementById("theme-primary");
+    const themeAccentInput = document.getElementById("theme-accent");
+    const themeTextInput = document.getElementById("theme-text");
+
+    const wallpaperChoices = document.querySelectorAll("[data-wallpaper]");
+    const wallpaperColorInput = document.getElementById("wallpaper-color");
+    const wallpaperGradientSelect = document.getElementById("wallpaper-gradient");
+    const wallpaperUploadInput = document.getElementById("wallpaper-upload");
+
+    const buttonStyleButtons = document.querySelectorAll("[data-button-style]");
+    const buttonShadowButtons = document.querySelectorAll("[data-button-shadow]");
+    const buttonRadiusInput = document.getElementById("button-radius");
+    const buttonRadiusValue = document.getElementById("button-radius-value");
+    const buttonBgInput = document.getElementById("button-bg");
+    const buttonTextInput = document.getElementById("button-text");
+
+    const footerToggle = document.getElementById("footer-toggle");
+    const footerTextInput = document.getElementById("footer-text");
+
+    let currentButtonStyle = buttonStyleField?.value || "solid";
+
+    function applyButtonStyle(style) {
+        currentButtonStyle = style;
+        if (buttonStyleField) {
+            buttonStyleField.value = style;
+        }
+        document.querySelectorAll(".preview-btn").forEach((btn) => {
+            btn.classList.remove("solid", "glass", "outline");
+            btn.classList.add(style);
+        });
+        buttonStyleButtons.forEach((btn) => {
+            const isActive = btn.dataset.buttonStyle === style;
+            btn.classList.toggle("bg-tt-card", isActive);
+            btn.classList.toggle("text-tt-accent", isActive);
+            btn.classList.toggle("border", !isActive);
+            btn.classList.toggle("border-tt-border", !isActive);
+            btn.classList.toggle("text-slate-100", !isActive);
+        });
+    }
+
+    function setButtonShadow(level) {
+        const shadowMap = {
+            none: "none",
+            subtle: "0 8px 18px rgba(0, 0, 0, 0.25)",
+            strong: "0 16px 32px rgba(0, 0, 0, 0.45)",
+            hard: "0 10px 0 rgba(0, 0, 0, 0.5)",
+        };
+        if (previewBody) {
+            previewBody.style.setProperty("--button-shadow", shadowMap[level] || shadowMap.subtle);
+        }
+        if (buttonShadowField) {
+            buttonShadowField.value = level;
+        }
+        buttonShadowButtons.forEach((btn) => {
+            const isActive = btn.dataset.buttonShadow === level;
+            btn.classList.toggle("bg-tt-card", isActive);
+            btn.classList.toggle("text-tt-accent", isActive);
+            btn.classList.toggle("border", !isActive);
+            btn.classList.toggle("border-tt-border", !isActive);
+            btn.classList.toggle("text-slate-100", !isActive);
+        });
+    }
+
+    function setHeaderMode(mode) {
+        headerModeButtons.forEach((btn) => {
+            const isActive = btn.dataset.headerMode === mode;
+            btn.classList.toggle("bg-tt-card", isActive);
+            btn.classList.toggle("text-tt-accent", isActive);
+            btn.classList.toggle("border", !isActive);
+            btn.classList.toggle("border-tt-border", !isActive);
+            btn.classList.toggle("text-slate-100", !isActive);
+        });
+        if (headerModeField) {
+            headerModeField.value = mode;
+        }
+        if (headerImageControls) {
+            headerImageControls.classList.toggle("hidden", mode !== "image");
+        }
+        if (headerTextControls) {
+            headerTextControls.classList.toggle("hidden", mode !== "text");
+        }
+        if (previewHeaderImage) {
+            previewHeaderImage.classList.toggle("hidden", mode !== "image");
+        }
+        if (previewHeaderText) {
+            previewHeaderText.classList.toggle("hidden", mode !== "text");
+        }
+    }
+
+    function setWallpaper(value) {
+        if (!previewBody || !value) {
+            return;
+        }
+        previewBody.style.background = value;
+        previewBody.style.backgroundSize = "cover";
+        previewBody.style.backgroundPosition = "center";
+        if (wallpaperField) {
+            wallpaperField.value = value;
+        }
+    }
+
+    function hexToRgba(hex, alpha) {
+        if (!hex || !hex.startsWith("#")) {
+            return hex;
+        }
+        const clean = hex.replace("#", "");
+        if (clean.length !== 6) {
+            return hex;
+        }
+        const r = parseInt(clean.slice(0, 2), 16);
+        const g = parseInt(clean.slice(2, 4), 16);
+        const b = parseInt(clean.slice(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function applyThemeColors(primary, accent, text) {
+        if (!previewBody) {
+            return;
+        }
+        if (primary) {
+            previewBody.style.setProperty("--button-bg", primary);
+            if (primaryField) {
+                primaryField.value = primary;
+            }
+        }
+        if (accent) {
+            previewBody.style.setProperty("--accent", accent);
+            if (accentField) {
+                accentField.value = accent;
+            }
+        }
+        if (text) {
+            previewBody.style.setProperty("--text-color", text);
+            previewBody.style.setProperty("--muted-color", hexToRgba(text, 0.7));
+            if (textColorField) {
+                textColorField.value = text;
+            }
+        }
+    }
+
+    const hasLogo = {{ profile.logo|yesno:"true,false" }};
+    const initialHeaderMode = headerModeField?.value || (hasLogo ? "image" : "text");
+    setHeaderMode(initialHeaderMode);
+
+    headerModeButtons.forEach((btn) => {
+        btn.addEventListener("click", () => setHeaderMode(btn.dataset.headerMode));
+    });
+
+    if (headerTextInput && previewHeaderText) {
+        previewHeaderText.textContent = headerTextInput.value || "Your headline";
+        if (headerTextField) {
+            headerTextField.value = headerTextInput.value || "Your headline";
+        }
+        headerTextInput.addEventListener("input", () => {
+            previewHeaderText.textContent = headerTextInput.value || "Your headline";
+            if (headerTextField) {
+                headerTextField.value = headerTextInput.value || "Your headline";
+            }
+        });
+    }
+
+    if (headerFontSelect && previewBody) {
+        if (headerFontField && headerFontField.value) {
+            headerFontSelect.value = headerFontField.value;
+        }
+        previewBody.style.setProperty("--font-header", headerFontSelect.value);
+        if (headerFontField) {
+            headerFontField.value = headerFontSelect.value;
+        }
+        headerFontSelect.addEventListener("change", () => {
+            previewBody.style.setProperty("--font-header", headerFontSelect.value);
+            if (headerFontField) {
+                headerFontField.value = headerFontSelect.value;
+            }
+        });
+    }
+
+    if (linkFontSelect && previewBody) {
+        if (linkFontField && linkFontField.value) {
+            linkFontSelect.value = linkFontField.value;
+        }
+        previewBody.style.setProperty("--font-links", linkFontSelect.value);
+        if (linkFontField) {
+            linkFontField.value = linkFontSelect.value;
+        }
+        linkFontSelect.addEventListener("change", () => {
+            previewBody.style.setProperty("--font-links", linkFontSelect.value);
+            if (linkFontField) {
+                linkFontField.value = linkFontSelect.value;
+            }
+        });
+    }
+
+    if (bioFontSelect && previewBody) {
+        if (bioFontField && bioFontField.value) {
+            bioFontSelect.value = bioFontField.value;
+        }
+        previewBody.style.setProperty("--font-bio", bioFontSelect.value);
+        if (bioFontField) {
+            bioFontField.value = bioFontSelect.value;
+        }
+        bioFontSelect.addEventListener("change", () => {
+            previewBody.style.setProperty("--font-bio", bioFontSelect.value);
+            if (bioFontField) {
+                bioFontField.value = bioFontSelect.value;
+            }
+        });
+    }
+
+    if (nameSizeSelect) {
+        if (nameSizeField && nameSizeField.value) {
+            nameSizeSelect.value = nameSizeField.value;
+        }
+        nameSizeSelect.addEventListener("change", () => {
+            previewBody?.style.setProperty("--name-size", nameSizeSelect.value);
+            if (nameSizeField) {
+                nameSizeField.value = nameSizeSelect.value;
+            }
+        });
+    }
+    if (bioSizeSelect) {
+        if (bioSizeField && bioSizeField.value) {
+            bioSizeSelect.value = bioSizeField.value;
+        }
+        bioSizeSelect.addEventListener("change", () => {
+            previewBody?.style.setProperty("--bio-size", bioSizeSelect.value);
+            if (bioSizeField) {
+                bioSizeField.value = bioSizeSelect.value;
+            }
+        });
+    }
+
+    themeCards.forEach((card) => {
+        card.addEventListener("click", () => {
+            const primary = card.dataset.primary;
+            const accent = card.dataset.accent;
+            const text = card.dataset.text;
+            const wallpaper = card.dataset.wallpaper;
+            const linkFont = card.dataset.linkFont;
+            const bioFont = card.dataset.bioFont;
+
+            if (themePrimaryInput && primary) {
+                themePrimaryInput.value = primary;
+            }
+            if (themeAccentInput && accent) {
+                themeAccentInput.value = accent;
+            }
+            if (themeTextInput && text) {
+                themeTextInput.value = text;
+            }
+            if (buttonBgInput && primary) {
+                buttonBgInput.value = primary;
+                if (buttonBgField) {
+                    buttonBgField.value = primary;
+                }
+            }
+            applyThemeColors(primary, accent, text);
+            if (wallpaper) {
+                setWallpaper(wallpaper);
+            }
+            if (linkFont && linkFontSelect) {
+                linkFontSelect.value = linkFont;
+                previewBody?.style.setProperty("--font-links", linkFont);
+                if (linkFontField) {
+                    linkFontField.value = linkFont;
+                }
+            }
+            if (bioFont && bioFontSelect) {
+                bioFontSelect.value = bioFont;
+                previewBody?.style.setProperty("--font-bio", bioFont);
+                if (bioFontField) {
+                    bioFontField.value = bioFont;
+                }
+            }
+        });
+    });
+
+    themePrimaryInput?.addEventListener("change", () => {
+        applyThemeColors(themePrimaryInput.value, themeAccentInput?.value, themeTextInput?.value);
+        if (buttonBgInput) {
+            buttonBgInput.value = themePrimaryInput.value;
+            previewBody?.style.setProperty("--button-bg", buttonBgInput.value);
+        }
+        if (buttonBgField) {
+            buttonBgField.value = themePrimaryInput.value;
+        }
+    });
+    themeAccentInput?.addEventListener("change", () => {
+        applyThemeColors(themePrimaryInput?.value, themeAccentInput.value, themeTextInput?.value);
+    });
+    themeTextInput?.addEventListener("change", () => {
+        applyThemeColors(themePrimaryInput?.value, themeAccentInput?.value, themeTextInput.value);
+    });
+
+    wallpaperChoices.forEach((choice) => {
+        choice.addEventListener("click", () => {
+            setWallpaper(choice.dataset.wallpaper);
+        });
+    });
+    wallpaperColorInput?.addEventListener("change", () => {
+        setWallpaper(wallpaperColorInput.value);
+    });
+    wallpaperGradientSelect?.addEventListener("change", () => {
+        if (wallpaperGradientSelect.value) {
+            setWallpaper(wallpaperGradientSelect.value);
+        }
+    });
+    wallpaperUploadInput?.addEventListener("change", () => {
+        const file = wallpaperUploadInput.files?.[0];
+        if (!file) {
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            if (event.target?.result) {
+                setWallpaper(`url(${event.target.result}) center/cover no-repeat`);
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+
+    logoInput?.addEventListener("change", () => {
+        const file = logoInput.files?.[0];
+        if (!file) {
+            if (previewAvatarImage && previewAvatar) {
+                previewAvatarImage.classList.add("hidden");
+                previewAvatar.classList.remove("hidden");
+            }
+            if (previewHeaderImage) {
+                previewHeaderImage.classList.add("hidden");
+            }
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const result = event.target?.result;
+            if (!result) {
+                return;
+            }
+            if (previewAvatarImage && previewAvatar) {
+                previewAvatarImage.src = result;
+                previewAvatarImage.classList.remove("hidden");
+                previewAvatar.classList.add("hidden");
+            }
+            if (previewHeaderImage) {
+                previewHeaderImage.src = result;
+                previewHeaderImage.classList.remove("hidden");
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+
+    const headerSrc = previewHeaderImage?.getAttribute("src");
+    if (headerSrc) {
+        previewAvatarImage.src = headerSrc;
+        previewAvatarImage.classList.remove("hidden");
+        previewAvatar.classList.add("hidden");
+    }
+
+    buttonStyleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            applyButtonStyle(btn.dataset.buttonStyle);
+        });
+    });
+    applyButtonStyle(currentButtonStyle);
+    setButtonShadow(buttonShadowField?.value || "subtle");
+    if (buttonRadiusInput && buttonRadiusValue) {
+        buttonRadiusValue.textContent = `${buttonRadiusInput.value}%`;
+        previewBody?.style.setProperty("--button-radius", `${buttonRadiusInput.value}%`);
+        if (buttonRadiusField) {
+            buttonRadiusField.value = buttonRadiusInput.value;
+        }
+    }
+
+    buttonShadowButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            setButtonShadow(btn.dataset.buttonShadow);
+        });
+    });
+
+    buttonRadiusInput?.addEventListener("input", () => {
+        const value = buttonRadiusInput.value;
+        if (buttonRadiusValue) {
+            buttonRadiusValue.textContent = `${value}%`;
+        }
+        previewBody?.style.setProperty("--button-radius", `${value}%`);
+        if (buttonRadiusField) {
+            buttonRadiusField.value = value;
+        }
+    });
+
+    buttonBgInput?.addEventListener("change", () => {
+        previewBody?.style.setProperty("--button-bg", buttonBgInput.value);
+        if (buttonBgField) {
+            buttonBgField.value = buttonBgInput.value;
+        }
+    });
+    buttonTextInput?.addEventListener("change", () => {
+        previewBody?.style.setProperty("--button-text", buttonTextInput.value);
+        if (buttonTextField) {
+            buttonTextField.value = buttonTextInput.value;
+        }
+    });
+
+    footerToggle?.addEventListener("change", () => {
+        if (previewFooter) {
+            previewFooter.classList.toggle("hidden", !footerToggle.checked);
+        }
+        if (footerShowField) {
+            footerShowField.value = footerToggle.checked ? "true" : "false";
+        }
+    });
+    footerTextInput?.addEventListener("input", () => {
+        if (previewFooter) {
+            previewFooter.textContent = footerTextInput.value || "Made by 10minal";
+        }
+        if (footerTextField) {
+            footerTextField.value = footerTextInput.value || "Made by 10minal";
+        }
+    });
+
+    const linksField = document.getElementById("id_links_text");
+    const addLinkButton = document.getElementById("add-link");
+    const linksList = document.getElementById("links-list");
+    const previewLinks = document.getElementById("preview-links");
+    const links = [];
+
+    function normalizeUrl(value) {
+        if (!value) {
+            return "";
+        }
+        let url = value.trim();
+        if (!/^https?:\/\//i.test(url)) {
+            url = `https://${url}`;
+        }
+        return url;
+    }
+
+    function inferPlatformName(url) {
+        const patterns = [
+            { regex: /youtube\.com|youtu\.be/i, name: "YouTube" },
+            { regex: /instagram\.com/i, name: "Instagram" },
+            { regex: /tiktok\.com/i, name: "TikTok" },
+            { regex: /linkedin\.com/i, name: "LinkedIn" },
+            { regex: /facebook\.com/i, name: "Facebook" },
+            { regex: /twitter\.com|x\.com/i, name: "X (Twitter)" },
+            { regex: /github\.com/i, name: "GitHub" },
+            { regex: /behance\.net/i, name: "Behance" },
+            { regex: /dribbble\.com/i, name: "Dribbble" },
+            { regex: /spotify\.com/i, name: "Spotify" },
+            { regex: /soundcloud\.com/i, name: "SoundCloud" },
+            { regex: /wa\.me|whatsapp\.com/i, name: "WhatsApp" },
+        ];
+        const match = patterns.find((item) => item.regex.test(url));
+        if (match) {
+            return match.name;
+        }
+        try {
+            const hostname = new URL(url).hostname.replace(/^www\./, "");
+            const base = hostname.split(".")[0] || "Website";
+            return base.charAt(0).toUpperCase() + base.slice(1);
+        } catch (error) {
+            return "Website";
+        }
+    }
+
+    function buildInitialLinks() {
+        if (!linksField || !linksField.value) {
+            return;
+        }
+        linksField.value.split("\\n").forEach((line) => {
+            const trimmed = line.trim();
+            if (!trimmed) {
+                return;
+            }
+            const parts = trimmed.split("|").map((part) => part.trim());
+            const url = parts.length > 1 ? parts[1] : parts[0];
+            const normalized = normalizeUrl(url);
+            const label = parts.length > 1 ? parts[0] : inferPlatformName(normalized);
+            links.push({ label, url: normalized });
+        });
+    }
+
+    function syncLinksField() {
+        if (!linksField) {
+            return;
+        }
+        linksField.value = links
+            .filter((link) => link.url)
+            .map((link) => `${link.label} | ${link.url}`)
+            .join("\\n");
+    }
+
+    function renderLinks() {
+        linksList.innerHTML = "";
+        if (!links.length) {
+            linksList.innerHTML = '<div class="rounded-xl border border-dashed border-tt-border px-4 py-6 text-center text-sm text-tt-muted">No links yet. Add your first link above.</div>';
+        } else {
+            links.forEach((link, index) => {
+                const card = document.createElement("div");
+                card.className = "rounded-2xl border border-tt-border bg-tt-card/80 px-4 py-4";
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="flex-1">
+                            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Platform</div>
+                            <div class="mt-1 text-sm font-semibold uppercase text-slate-100" data-label="${index}">${(link.label || "New link").toUpperCase()}</div>
+                            <input data-link-url="${index}" type="url" class="mt-3 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" placeholder="https://youtube.com/..." value="${link.url || ""}">
+                            <div class="mt-2 text-xs text-tt-muted">Paste the URL to auto-detect the platform name.</div>
+                        </div>
+                        <button type="button" class="rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-red-400 hover:text-red-300" data-remove="${index}">Remove</button>
+                    </div>
+                `;
+                linksList.appendChild(card);
+            });
+        }
+        renderPreviewLinks();
+        syncLinksField();
+    }
+
+    function renderPreviewLinks() {
+        previewLinks.innerHTML = "";
+        if (!links.length) {
+            previewLinks.innerHTML = '<div class="preview-btn outline block px-4 py-2 text-center text-xs font-semibold">Add your first link</div>';
+            applyButtonStyle(currentButtonStyle);
+            return;
+        }
+        links.filter((link) => link.url).forEach((link) => {
+            const item = document.createElement("div");
+            item.className = `preview-btn ${currentButtonStyle} block px-4 py-2 text-center text-xs font-semibold`;
+            item.textContent = link.label || "Link";
+            previewLinks.appendChild(item);
+        });
+        applyButtonStyle(currentButtonStyle);
+    }
+
+    function updatePreview() {
+        const name = document.getElementById("id_full_name")?.value || "";
+        const title = document.getElementById("id_title")?.value || "";
+        const company = document.getElementById("id_company")?.value || "";
+        const phone = document.getElementById("id_phone")?.value || "";
+        const whatsapp = document.getElementById("id_whatsapp")?.value || "";
+        const email = document.getElementById("id_email")?.value || "";
+        const website = document.getElementById("id_website")?.value || "";
+        const bio = document.getElementById("id_bio")?.value || "";
+
+        const nameEl = document.getElementById("preview-name");
+        const titleEl = document.getElementById("preview-title");
+        const companyEl = document.getElementById("preview-company");
+        const bioEl = document.getElementById("preview-bio");
+
+        if (nameEl) {
+            nameEl.textContent = name || "Your name";
+        }
+        if (titleEl) {
+            titleEl.textContent = title || "Your title";
+        }
+        if (companyEl) {
+            companyEl.textContent = company || "Company";
+        }
+        if (bioEl) {
+            bioEl.textContent = bio || "Add a short bio";
+            bioEl.classList.toggle("hidden", !bio);
+        }
+
+        if (previewAvatar) {
+            const initials = name
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((part) => part[0].toUpperCase())
+                .join("");
+            previewAvatar.textContent = initials || "TT";
+        }
+
+        document.getElementById("preview-call")?.classList.toggle("hidden", !phone);
+        document.getElementById("preview-whatsapp")?.classList.toggle("hidden", !whatsapp && !phone);
+        document.getElementById("preview-email")?.classList.toggle("hidden", !email);
+        document.getElementById("preview-website")?.classList.toggle("hidden", !website);
+    }
+
+    function addLink() {
+        links.push({ label: "New link", url: "" });
+        renderLinks();
+        const lastInput = linksList.querySelector(`[data-link-url="${links.length - 1}"]`);
+        lastInput?.focus();
+    }
+
+    linksList?.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-remove]");
+        if (!target) {
+            return;
+        }
+        const index = Number(target.dataset.remove);
+        if (!Number.isNaN(index)) {
+            links.splice(index, 1);
+            renderLinks();
+        }
+    });
+
+    addLinkButton?.addEventListener("click", addLink);
+
+    linksList?.addEventListener("input", (event) => {
+        const input = event.target.closest("[data-link-url]");
+        if (!input) {
+            return;
+        }
+        const index = Number(input.dataset.linkUrl);
+        if (Number.isNaN(index) || !links[index]) {
+            return;
+        }
+        const raw = input.value.trim();
+        if (!raw) {
+            links[index].url = "";
+            links[index].label = "New link";
+        } else {
+            const normalized = normalizeUrl(raw);
+            links[index].url = normalized;
+            links[index].label = inferPlatformName(normalized);
+        }
+        const labelEl = linksList.querySelector(`[data-label="${index}"]`);
+        if (labelEl) {
+            labelEl.textContent = links[index].label.toUpperCase();
+        }
+        renderPreviewLinks();
+        syncLinksField();
+    });
+
+    linksList?.addEventListener("blur", (event) => {
+        const input = event.target.closest("[data-link-url]");
+        if (!input) {
+            return;
+        }
+        const raw = input.value.trim();
+        if (raw && !/^https?:\/\//i.test(raw)) {
+            input.value = normalizeUrl(raw);
+        }
+    }, true);
+
+    document.querySelectorAll("#id_full_name, #id_title, #id_company, #id_phone, #id_whatsapp, #id_email, #id_website, #id_bio")
+        .forEach((el) => {
+            el.addEventListener("input", updatePreview);
+        });
+
+    if (footerTextInput && previewFooter) {
+        previewFooter.textContent = footerTextInput.value || "Made by 10minal";
+    }
+    if (footerShowField && footerToggle) {
+        footerShowField.value = footerToggle.checked ? "true" : "false";
+    }
+    if (footerTextField && footerTextInput) {
+        footerTextField.value = footerTextInput.value || "Made by 10minal";
+    }
+    if (themePrimaryInput && primaryField) {
+        primaryField.value = themePrimaryInput.value;
+    }
+    if (themeAccentInput && accentField) {
+        accentField.value = themeAccentInput.value;
+    }
+    if (themeTextInput && textColorField) {
+        textColorField.value = themeTextInput.value;
+    }
+    if (buttonBgInput && buttonBgField) {
+        buttonBgField.value = buttonBgInput.value;
+    }
+    if (buttonTextInput && buttonTextField) {
+        buttonTextField.value = buttonTextInput.value;
+    }
+    if (headerTextField && headerTextInput) {
+        headerTextField.value = headerTextInput.value || "Your headline";
+    }
+    if (wallpaperField && previewBody) {
+        const currentWallpaper = previewBody.style.getPropertyValue("--wallpaper").trim();
+        if (currentWallpaper) {
+            wallpaperField.value = currentWallpaper;
+        }
+    }
+    applyThemeColors(themePrimaryInput?.value, themeAccentInput?.value, themeTextInput?.value);
+    if (buttonBgInput && previewBody) {
+        previewBody.style.setProperty("--button-bg", buttonBgInput.value);
+    }
+    if (buttonTextInput && previewBody) {
+        previewBody.style.setProperty("--button-text", buttonTextInput.value);
+    }
+    updatePreview();
+    buildInitialLinks();
+    renderLinks();
+</script>
+{% endblock %}

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Client Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            tt: {
+                                bg: "#0b0f14",
+                                panel: "#141a23",
+                                border: "#243041",
+                                accent: "#27d3a6",
+                                muted: "#94a3b8",
+                            },
+                        },
+                        fontFamily: {
+                            sora: ["Sora", "sans-serif"],
+                        },
+                    },
+                },
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen font-sora text-slate-100" style="background: radial-gradient(circle at top, #245a4b 0%, #0f2a24 45%, #071512 100%);">
+<div class="relative min-h-screen overflow-hidden">
+    <div class="pointer-events-none absolute -left-24 top-12 h-60 w-60 rounded-full bg-emerald-400/30 blur-3xl"></div>
+    <div class="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-emerald-200/20 blur-3xl"></div>
+
+    <div class="relative mx-auto flex min-h-screen max-w-6xl items-center px-6 py-12">
+        <div class="grid w-full overflow-hidden rounded-[2.75rem] border border-emerald-900/50 bg-emerald-950/70 shadow-[0_40px_120px_rgba(4,18,16,0.65)] lg:grid-cols-[1.1fr_0.9fr]">
+            <div class="relative hidden min-h-[560px] flex-col justify-between bg-emerald-50 p-10 text-emerald-900 lg:flex">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-200 bg-white text-sm font-semibold text-emerald-700">TT</div>
+                    <div>
+                        <div class="text-xs uppercase tracking-[0.28em] text-emerald-500">ThinkTech</div>
+                        <div class="text-lg font-semibold text-emerald-800">BizCards Portal</div>
+                    </div>
+                </div>
+
+                <div class="relative mx-auto mt-6 flex h-72 w-72 items-center justify-center">
+                    <div class="absolute inset-0 rounded-[2.5rem] bg-emerald-100/70 blur-xl"></div>
+                    <div class="relative flex h-60 w-60 flex-col items-center justify-center rounded-[2.5rem] bg-white/90 shadow-xl">
+                        <div class="flex h-28 w-28 items-center justify-center rounded-full bg-emerald-200/80">
+                            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-300/80 text-xs font-semibold text-emerald-800">NFC</div>
+                        </div>
+                        <div class="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-emerald-600">Tap + Share</div>
+                        <div class="mt-4 flex gap-2">
+                            <span class="h-2 w-2 rounded-full bg-emerald-300"></span>
+                            <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-xs text-emerald-600/80">NFC-powered digital business cards for modern teams.</div>
+            </div>
+
+            <div class="flex flex-col justify-center bg-emerald-950/95 px-8 py-10 sm:px-12">
+                <div class="mb-6 flex items-center gap-3 lg:hidden">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-2xl border border-emerald-800 bg-emerald-900/60 text-xs font-semibold text-emerald-200">TT</div>
+                    <div>
+                        <div class="text-xs uppercase tracking-[0.28em] text-emerald-400">ThinkTech</div>
+                        <div class="text-sm font-semibold text-emerald-100">BizCards Portal</div>
+                    </div>
+                </div>
+
+                <h1 class="text-3xl font-semibold text-white">Login</h1>
+                <p class="mt-2 text-sm text-emerald-200/70">Access your card analytics, links, and profile updates.</p>
+
+                {% if form.errors %}
+                <div class="mt-4 rounded-2xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">Invalid email or password.</div>
+                {% endif %}
+
+                <form method="post" class="mt-6 space-y-5">
+                    {% csrf_token %}
+                    <div>
+                        <label class="text-xs uppercase tracking-[0.2em] text-emerald-300/70">Email</label>
+                        {{ form.username }}
+                    </div>
+                    <div>
+                        <label class="text-xs uppercase tracking-[0.2em] text-emerald-300/70">Password</label>
+                        {{ form.password }}
+                    </div>
+                    <button class="w-full rounded-full bg-gradient-to-r from-emerald-200 to-emerald-400 px-4 py-2 text-sm font-semibold text-emerald-950 shadow-lg shadow-emerald-500/20" type="submit">Login</button>
+                </form>
+
+                <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-emerald-200/70">
+                    <span>Need help? <a class="font-semibold text-emerald-200 hover:text-white" href="mailto:hello@thinktechbizcards.com">Contact support</a></span>
+                    <span>No account? <span class="font-semibold text-emerald-200">Ask an admin</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+﻿{% extends "public/base.html" %}
+
+{% block content %}
+<section class="mx-auto max-w-6xl px-6">
+    <div class="inline-flex items-center rounded-full border border-tt-accent/40 bg-tt-accent/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-tt-accent">
+        Home / Pricing Plan
+    </div>
+    <div class="mt-5 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div>
+            <h1 class="text-3xl font-semibold leading-tight md:text-4xl">Crafting a smart first impression together.</h1>
+            <p class="mt-3 max-w-xl text-sm text-tt-muted md:text-base">
+                ThinkTech BizCards is not a website builder. Pick a template preset, tune your brand colors,
+                and share your NFC-powered digital card instantly.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a class="rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-5 py-2 text-sm font-semibold text-slate-950" href="/order/">Start your order</a>
+                <a class="rounded-full border border-tt-border px-5 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="#packages">See packages</a>
+            </div>
+        </div>
+        <div class="rounded-2xl border border-tt-border bg-tt-panel/70 p-6">
+            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Why ThinkTech</div>
+            <h3 class="mt-3 text-xl font-semibold">One card. Instant updates.</h3>
+            <ul class="mt-4 space-y-3 text-sm text-tt-muted">
+                <li class="flex items-start gap-2">
+                    <span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>
+                    NFC cards that always point to the latest profile.
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>
+                    Simple preset templates with brand color control.
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>
+                    Fulfillment handled by our operations team.
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="packages" class="mx-auto mt-14 max-w-6xl px-6">
+    <div class="text-center">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Choose your package</div>
+        <h2 class="mt-3 text-2xl font-semibold md:text-3xl">Plans built for every business moment.</h2>
+        <p class="mt-2 text-sm text-tt-muted">Year 1 hosting is included. Renewal required after 12 months.</p>
+    </div>
+    <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-2xl border border-tt-border bg-tt-card p-6 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+            <h3 class="text-lg font-semibold">Basic</h3>
+            <div class="mt-3 text-3xl font-semibold text-tt-accent">GHS {{ packages.basic.price }}</div>
+            <p class="mt-2 text-sm text-tt-muted">Starter kit for solo founders and personal brands.</p>
+            <div class="mt-5 border-t border-tt-border/70 pt-4 text-xs uppercase tracking-[0.2em] text-tt-muted">Includes</div>
+            <ul class="mt-4 space-y-3 text-sm text-tt-muted">
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>{{ packages.basic.card_quantity }} NFC cards</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>2 profile edits included</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>Standard theme customization</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>Hosting for year 1</li>
+            </ul>
+            <a class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-4 py-2 text-sm font-semibold text-slate-950" href="/order/">Get started</a>
+        </div>
+        <div class="relative rounded-2xl border border-tt-accent/70 bg-tt-card p-6 shadow-[0_20px_50px_rgba(39,211,166,0.18)]">
+            <span class="absolute -top-3 left-6 rounded-full bg-tt-accent px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-950">Popular</span>
+            <h3 class="text-lg font-semibold">Pro</h3>
+            <div class="mt-3 text-3xl font-semibold text-tt-accent">GHS {{ packages.pro.price }}</div>
+            <p class="mt-2 text-sm text-tt-muted">For growing teams that need analytics.</p>
+            <div class="mt-5 border-t border-tt-border/70 pt-4 text-xs uppercase tracking-[0.2em] text-tt-muted">Includes</div>
+            <ul class="mt-4 space-y-3 text-sm text-tt-muted">
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>{{ packages.pro.card_quantity }} NFC cards</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>5 profile edits included</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>Basic analytics dashboard</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>Hosting for year 1</li>
+            </ul>
+            <a class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-4 py-2 text-sm font-semibold text-slate-950" href="/order/">Get started</a>
+        </div>
+        <div class="rounded-2xl border border-tt-border bg-tt-card p-6 shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+            <h3 class="text-lg font-semibold">Premium</h3>
+            <div class="mt-3 text-3xl font-semibold text-tt-accent">GHS {{ packages.premium.price }}</div>
+            <p class="mt-2 text-sm text-tt-muted">Unlimited edits and advanced analytics.</p>
+            <div class="mt-5 border-t border-tt-border/70 pt-4 text-xs uppercase tracking-[0.2em] text-tt-muted">Includes</div>
+            <ul class="mt-4 space-y-3 text-sm text-tt-muted">
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>{{ packages.premium.card_quantity }} NFC cards</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>Unlimited edits (fair use)</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>Advanced analytics dashboard</li>
+                <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full bg-tt-accent"></span>Hosting for year 1</li>
+            </ul>
+            <a class="mt-6 inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-4 py-2 text-sm font-semibold text-slate-950" href="/order/">Get started</a>
+        </div>
+    </div>
+</section>
+
+<section class="mx-auto mt-14 max-w-6xl px-6 text-center">
+    <p class="text-sm text-tt-muted">Trusted by teams launching bold first impressions.</p>
+    <div class="mt-6 grid grid-cols-2 gap-4 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400 md:grid-cols-5">
+        <span>Launchpad</span>
+        <span>Signal</span>
+        <span>Orbit</span>
+        <span>Coastline</span>
+        <span>Vertex</span>
+    </div>
+</section>
+
+<section class="mx-auto mt-14 max-w-6xl px-6">
+    <div class="rounded-2xl border border-tt-accent/40 bg-gradient-to-r from-tt-accent/20 to-tt-accent2/20 p-6 md:p-8">
+        <div class="grid items-center gap-6 md:grid-cols-[1.2fr_0.8fr]">
+            <div>
+                <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Get your card live today</div>
+                <h3 class="mt-3 text-2xl font-semibold">Best solutions for modern networking.</h3>
+                <p class="mt-2 text-sm text-tt-muted">Choose a preset, publish instantly, and we handle NFC fulfillment and delivery.</p>
+            </div>
+            <div class="flex flex-wrap gap-3 md:justify-end">
+                <a class="rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-5 py-2 text-sm font-semibold text-slate-950" href="/order/">Get started</a>
+                <a class="rounded-full border border-tt-border px-5 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/order/">See templates</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mx-auto mt-16 max-w-6xl px-6">
+    <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Frequently asked questions</div>
+            <h2 class="mt-3 text-2xl font-semibold md:text-3xl">Common questions from new customers.</h2>
+            <p class="mt-2 text-sm text-tt-muted">Everything you need to know about templates, hosting, and edits.</p>
+        </div>
+        <div class="space-y-3" data-faq>
+            <div class="rounded-xl border border-tt-border bg-tt-panel/80">
+                <button class="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold" data-faq-button>
+                    How fast can my card go live?
+                    <span class="text-tt-accent">+</span>
+                </button>
+                <div class="hidden px-4 pb-4 text-sm text-tt-muted" data-faq-body>
+                    Your digital card is live immediately after payment confirmation.
+                </div>
+            </div>
+            <div class="rounded-xl border border-tt-border bg-tt-panel/80">
+                <button class="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold" data-faq-button>
+                    Can I update my information later?
+                    <span class="text-tt-accent">+</span>
+                </button>
+                <div class="hidden px-4 pb-4 text-sm text-tt-muted" data-faq-body>
+                    Yes, edits are included based on your package. Premium includes unlimited edits.
+                </div>
+            </div>
+            <div class="rounded-xl border border-tt-border bg-tt-panel/80">
+                <button class="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold" data-faq-button>
+                    What happens after the first year?
+                    <span class="text-tt-accent">+</span>
+                </button>
+                <div class="hidden px-4 pb-4 text-sm text-tt-muted" data-faq-body>
+                    Hosting renews annually (GHS 36/year). Profiles suspend if not renewed.
+                </div>
+            </div>
+            <div class="rounded-xl border border-tt-border bg-tt-panel/80">
+                <button class="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold" data-faq-button>
+                    How are NFC cards delivered?
+                    <span class="text-tt-accent">+</span>
+                </button>
+                <div class="hidden px-4 pb-4 text-sm text-tt-muted" data-faq-body>
+                    We coordinate delivery via WhatsApp after your order is confirmed.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="mx-auto mt-16 border-t border-tt-border/70 px-6 py-10">
+    <div class="mx-auto grid max-w-6xl gap-8 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
+        <div>
+            <h4 class="text-lg font-semibold">Prepare to make smarter introductions.</h4>
+            <p class="mt-2 text-sm text-tt-muted">Leave your email and we will send a quick consultation.</p>
+            <div class="mt-4 flex flex-wrap gap-3">
+                <input class="w-full rounded-full border border-tt-border bg-tt-panel/60 px-4 py-2 text-sm text-slate-100 placeholder:text-tt-muted md:w-64" placeholder="Your email" />
+                <button class="rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-4 py-2 text-sm font-semibold text-slate-950">Submit</button>
+            </div>
+            <div class="mt-3 text-sm text-tt-muted">hello@thinktechbizcards.com</div>
+        </div>
+        <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Quick Links</div>
+            <div class="mt-3 grid gap-2 text-sm">
+                <a class="text-slate-100 hover:text-tt-accent" href="/order/">Create order</a>
+                <a class="text-slate-100 hover:text-tt-accent" href="#packages">Packages</a>
+                <a class="text-slate-100 hover:text-tt-accent" href="/client/login/">Client portal</a>
+            </div>
+        </div>
+        <div>
+            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Information</div>
+            <div class="mt-3 grid gap-2 text-sm text-tt-muted">
+                <span>Terms and conditions</span>
+                <span>Privacy policy</span>
+                <span>Support: WhatsApp</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.querySelectorAll("[data-faq]").forEach((wrap) => {
+        const buttons = wrap.querySelectorAll("[data-faq-button]");
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const body = btn.parentElement.querySelector("[data-faq-body]");
+                const isOpen = !body.classList.contains("hidden");
+                wrap.querySelectorAll("[data-faq-body]").forEach((panel) => {
+                    panel.classList.add("hidden");
+                });
+                if (!isOpen) {
+                    body.classList.remove("hidden");
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

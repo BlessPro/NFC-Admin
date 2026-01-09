@@ -1,0 +1,37 @@
+﻿{% extends "ops/base.html" %}
+
+{% block content %}
+<h3 class="text-2xl font-semibold">Order #{{ order.id }}</h3>
+<div class="mt-6 grid gap-4 md:grid-cols-2">
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+        <p class="text-sm"><span class="text-tt-muted">Customer:</span> {{ order.customer.full_name }}</p>
+        <p class="mt-2 text-sm"><span class="text-tt-muted">Package:</span> {{ order.get_package_display }}</p>
+        <p class="mt-2 text-sm"><span class="text-tt-muted">Cards:</span> {{ order.card_quantity }}</p>
+        <p class="mt-2 text-sm"><span class="text-tt-muted">Status:</span> {{ order.get_status_display }}</p>
+        <p class="mt-2 text-sm"><span class="text-tt-muted">Shipping:</span> {{ order.shipping_name }} ({{ order.shipping_phone }})</p>
+        <p class="mt-2 text-sm"><span class="text-tt-muted">Address:</span> {{ order.shipping_address }}</p>
+        {% if order.tracking_code %}
+        <p class="mt-2 text-sm"><span class="text-tt-muted">Tracking:</span> {{ order.tracking_code }}</p>
+        {% endif %}
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Update status</div>
+        <form method="post" class="mt-4 space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="text-sm text-tt-muted">Status</label>
+                {{ form.status }}
+            </div>
+            <div>
+                <label class="text-sm text-tt-muted">Tracking code</label>
+                {{ form.tracking_code }}
+            </div>
+            <div>
+                <label class="text-sm text-tt-muted">Notes</label>
+                {{ form.notes }}
+            </div>
+            <button class="rounded-full bg-tt-accent px-5 py-2 text-xs font-semibold text-slate-950" type="submit">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

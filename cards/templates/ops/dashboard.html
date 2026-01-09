@@ -1,0 +1,41 @@
+﻿{% extends "ops/base.html" %}
+
+{% block content %}
+<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">New paid orders</div>
+        <div class="mt-2 text-2xl font-semibold">{{ new_paid_orders }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Orders to encode</div>
+        <div class="mt-2 text-2xl font-semibold">{{ orders_to_encode }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Orders to ship</div>
+        <div class="mt-2 text-2xl font-semibold">{{ orders_to_ship }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Profiles live</div>
+        <div class="mt-2 text-2xl font-semibold">{{ profiles_live }}</div>
+    </div>
+</div>
+
+<div class="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Renewals (30d)</div>
+        <div class="mt-2 text-2xl font-semibold">{{ renewals_30d }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Renewals (7d)</div>
+        <div class="mt-2 text-2xl font-semibold">{{ renewals_7d }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Visits (7d)</div>
+        <div class="mt-2 text-2xl font-semibold">{{ visits_last_7d }}</div>
+    </div>
+    <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-4">
+        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Actions (7d)</div>
+        <div class="mt-2 text-2xl font-semibold">{{ actions_last_7d }}</div>
+    </div>
+</div>
+{% endblock %}

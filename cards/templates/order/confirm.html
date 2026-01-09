@@ -1,0 +1,30 @@
+﻿{% extends "public/base.html" %}
+
+{% block content %}
+<section class="mx-auto max-w-4xl px-6">
+    <h2 class="text-2xl font-semibold">Confirm your order</h2>
+    <p class="mt-2 text-sm text-tt-muted">Payment is simulated for MVP. Click below to activate your card.</p>
+
+    <div class="mt-6 rounded-2xl border border-tt-border bg-tt-panel/70 p-6">
+        <div class="grid gap-6 md:grid-cols-2">
+            <div>
+                <h6 class="text-xs uppercase tracking-[0.2em] text-tt-muted">Customer</h6>
+                <p class="mt-2 text-sm">{{ payload.customer.full_name }}</p>
+                <p class="text-sm text-tt-muted">{{ payload.customer.email }}</p>
+                <p class="text-sm text-tt-muted">{{ payload.customer.phone }}</p>
+            </div>
+            <div>
+                <h6 class="text-xs uppercase tracking-[0.2em] text-tt-muted">Package</h6>
+                <p class="mt-2 text-sm">{{ package.label }}</p>
+                <p class="text-sm text-tt-muted">GHS {{ package.price }}</p>
+                <p class="text-sm text-tt-muted">Cards: {{ package.card_quantity }}</p>
+            </div>
+        </div>
+    </div>
+
+    <form method="post" class="mt-6">
+        {% csrf_token %}
+        <button class="rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-6 py-2 text-sm font-semibold text-slate-950" type="submit">Simulate payment success</button>
+    </form>
+</section>
+{% endblock %}
