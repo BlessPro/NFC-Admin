@@ -1,4 +1,6 @@
-﻿from django import forms
+import json
+
+from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
@@ -34,6 +36,16 @@ def _to_bool(value):
     if isinstance(value, bool):
         return value
     return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _parse_json_list(raw):
+    if not raw:
+        return []
+    try:
+        value = json.loads(raw)
+    except (TypeError, ValueError):
+        return []
+    return value if isinstance(value, list) else []
 
 
 class AdminLoginForm(AuthenticationForm):
@@ -294,6 +306,29 @@ class ClientProfileForm(forms.Form):
     website = forms.CharField(max_length=200, required=False)
     bio = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 3}))
     links_text = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 3}))
+    template_key = forms.CharField(required=False, widget=forms.HiddenInput())
+    portfolio_headline = forms.CharField(required=False)
+    portfolio_job_type = forms.ChoiceField(
+        required=False,
+        choices=[
+            ("", "Select job type"),
+            ("freelance", "Freelance"),
+            ("full-time", "Full-time"),
+            ("contract", "Contract"),
+            ("internship", "Internship"),
+            ("remote", "Remote"),
+            ("other", "Other"),
+        ],
+    )
+    portfolio_position = forms.CharField(required=False)
+    portfolio_location = forms.CharField(required=False)
+    portfolio_age = forms.CharField(required=False)
+    portfolio_interests = forms.CharField(required=False, widget=forms.HiddenInput())
+    portfolio_tools_design = forms.CharField(required=False, widget=forms.HiddenInput())
+    portfolio_tools_editing = forms.CharField(required=False, widget=forms.HiddenInput())
+    portfolio_languages = forms.CharField(required=False, widget=forms.HiddenInput())
+    portfolio_experience = forms.CharField(required=False, widget=forms.HiddenInput())
+    portfolio_education = forms.CharField(required=False, widget=forms.HiddenInput())
     layout = forms.CharField(required=False, widget=forms.HiddenInput())
     header_mode = forms.CharField(required=False, widget=forms.HiddenInput())
     header_text = forms.CharField(required=False, widget=forms.HiddenInput())
@@ -320,12 +355,14 @@ class ClientProfileForm(forms.Form):
         if self.profile:
             content = self.profile.content_json or {}
             theme = self.profile.theme_json or {}
+            portfolio = content.get("portfolio") or {}
             links = content.get("links") or []
             links_text = "\n".join(
                 [f"{link.get('label', '')} | {link.get('url', '')}".strip(" |") for link in links]
             )
             self.initial.update(
                 {
+                    "template_key": self.profile.template_key or "business",
                     "full_name": content.get("full_name", "") or self.profile.customer.full_name,
                     "title": content.get("title", ""),
                     "company": content.get("company", ""),
@@ -335,6 +372,17 @@ class ClientProfileForm(forms.Form):
                     "website": content.get("website", ""),
                     "bio": content.get("bio", ""),
                     "links_text": links_text,
+                    "portfolio_headline": portfolio.get("headline", ""),
+                    "portfolio_job_type": portfolio.get("job_type", ""),
+                    "portfolio_position": portfolio.get("position", ""),
+                    "portfolio_location": portfolio.get("location", ""),
+                    "portfolio_age": portfolio.get("age", ""),
+                    "portfolio_interests": json.dumps(portfolio.get("interests", [])),
+                    "portfolio_tools_design": json.dumps(portfolio.get("tools_design", [])),
+                    "portfolio_tools_editing": json.dumps(portfolio.get("tools_editing", [])),
+                    "portfolio_languages": json.dumps(portfolio.get("languages", [])),
+                    "portfolio_experience": json.dumps(portfolio.get("experience", [])),
+                    "portfolio_education": json.dumps(portfolio.get("education", [])),
                     "layout": theme.get("layout", "linktree"),
                     "header_mode": theme.get("header_mode", "image" if self.profile.logo else "text"),
                     "header_text": theme.get("header_text", "") or content.get("company") or content.get("full_name"),
@@ -349,7 +397,7 @@ class ClientProfileForm(forms.Form):
                     ),
                     "text_color": theme.get("text_color", "#f8fafc"),
                     "button_style": theme.get("button_style", "solid"),
-                    "button_radius": str(theme.get("button_radius", "100")),
+                    "button_radius": str(theme.get("button_radius", "24")),
                     "button_shadow": theme.get("button_shadow", "subtle"),
                     "button_bg": theme.get("button_bg", theme.get("primary", "#27d3a6")),
                     "button_text": theme.get("button_text", "#0b0f14"),
@@ -392,7 +440,15 @@ class ClientProfileForm(forms.Form):
 
         data = self.cleaned_data
         links = self._parse_links(data.get("links_text"))
-        self.profile.content_json = build_content(
+        previous_template = self.profile.template_key or "business"
+        template_key = data.get("template_key") or previous_template or "business"
+        valid_templates = {key for key, _ in TEMPLATE_CHOICES}
+        if template_key not in valid_templates:
+            template_key = "business"
+        switching_template = template_key != previous_template
+        self.profile.template_key = template_key
+
+        content = build_content(
             {
                 "full_name": data.get("full_name"),
                 "title": data.get("title"),
@@ -405,6 +461,32 @@ class ClientProfileForm(forms.Form):
                 "links": links,
             }
         )
+        existing_content = self.profile.content_json or {}
+        existing_portfolio = existing_content.get("portfolio")
+        if template_key == "portfolio":
+            portfolio_experience = [
+                item for item in _parse_json_list(data.get("portfolio_experience")) if isinstance(item, dict)
+            ]
+            portfolio_education = [
+                item for item in _parse_json_list(data.get("portfolio_education")) if isinstance(item, dict)
+            ]
+            content["portfolio"] = {
+                "headline": data.get("portfolio_headline", ""),
+                "job_type": data.get("portfolio_job_type", ""),
+                "position": data.get("portfolio_position", ""),
+                "location": data.get("portfolio_location", ""),
+                "age": data.get("portfolio_age", ""),
+                "interests": _parse_json_list(data.get("portfolio_interests")),
+                "tools_design": _parse_json_list(data.get("portfolio_tools_design")),
+                "tools_editing": _parse_json_list(data.get("portfolio_tools_editing")),
+                "languages": _parse_json_list(data.get("portfolio_languages")),
+                "experience": portfolio_experience,
+                "education": portfolio_education,
+            }
+        elif not switching_template and existing_portfolio:
+            content["portfolio"] = existing_portfolio
+
+        self.profile.content_json = content
         theme = self.profile.theme_json or {}
         theme.update(
             build_theme(

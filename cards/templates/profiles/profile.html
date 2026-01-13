@@ -29,6 +29,7 @@
         };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
     <style>
         .preview-body {
             background: var(--wallpaper);
@@ -64,14 +65,91 @@
             color: var(--button-text);
             backdrop-filter: blur(12px);
         }
+        .preview-btn.block {
+            background: transparent;
+            border: 1px solid var(--button-bg);
+            color: var(--button-bg);
+        }
+        .preview-btn.rise {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--text-color);
+        }
+        .link-buttons .preview-btn.block {
+            background: linear-gradient(90deg, var(--button-bg), var(--accent));
+            border: 2px solid var(--button-text);
+            color: var(--button-text);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            box-shadow: 3px 3px 0 var(--button-text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            text-align: left;
+        }
+        .link-buttons .preview-btn {
+            width: 100%;
+        }
+        .link-buttons .preview-btn.block::after {
+            content: "";
+            width: 4px;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--button-text);
+            box-shadow: 0 6px 0 var(--button-text), 0 12px 0 var(--button-text);
+            flex-shrink: 0;
+        }
+        .link-buttons .preview-btn.block:hover {
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0 var(--button-text);
+        }
+        .link-buttons .preview-btn.rise {
+            position: relative;
+            background: linear-gradient(90deg, var(--button-bg), var(--accent), var(--primary));
+            color: var(--button-text);
+            border-radius: 999px;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            text-align: left;
+            padding-right: 2.75rem;
+        }
+        .link-buttons .preview-btn.rise::after {
+            content: "";
+            position: absolute;
+            right: 1rem;
+            width: 4px;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--button-text);
+            box-shadow: 0 6px 0 var(--button-text), 0 12px 0 var(--button-text);
+        }
+        .link-buttons .preview-btn.rise:hover {
+            filter: brightness(1.1);
+        }
+        .icon-action {
+            color: var(--text-color);
+        }
+        .icon-action:hover {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body class="min-h-screen font-sora text-slate-100" style="background: radial-gradient(900px circle at 20% -10%, rgba(39, 211, 166, 0.2), transparent 60%), #0b0f14;">
-{% if theme.layout == "linktree" %}
+{% if profile.template_key == "portfolio" %}
+<div class="mx-auto flex min-h-screen max-w-md items-center px-4 py-10">
+    <div class="w-full rounded-3xl border border-tt-border bg-tt-panel/80 p-6" style="--primary: {{ theme.primary|default:'#0d6efd' }}; --secondary: {{ theme.secondary|default:'#1f2937' }}; --accent: {{ theme.accent|default:'#f59e0b' }};">
+        {% include "profiles/layouts/portfolio.html" %}
+    </div>
+</div>
+{% elif theme.layout == "linktree" or profile.template_key == "business" %}
 <div class="mx-auto flex min-h-screen max-w-md items-center px-4 py-10">
     <div class="w-full max-w-[414px]">
         <div class="relative w-full overflow-hidden rounded-[2.5rem] border border-tt-border bg-tt-card shadow-[0_25px_60px_rgba(0,0,0,0.55)]" style="aspect-ratio: 414 / 896;">
-            <div id="public-preview" class="preview-body flex h-full flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-[2.2rem] p-4" data-button-style="{{ theme.button_style|default:'solid' }}" data-button-shadow="{{ theme.button_shadow|default:'subtle' }}" style="--wallpaper: {{ theme.wallpaper|default:'linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)' }}; --text-color: {{ theme.text_color|default:'#f8fafc' }}; --muted-color: rgba(248, 250, 252, 0.7); --button-bg: {{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}; --button-text: {{ theme.button_text|default:'#0b0f14' }}; --button-radius: {{ theme.button_radius|default:'100' }}%; --button-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); --font-header: {{ theme.header_font|default:"'Sora', sans-serif" }}; --font-links: {{ theme.link_font|default:"'Sora', sans-serif" }}; --font-bio: {{ theme.bio_font|default:"'Sora', sans-serif" }}; --name-size: {{ theme.name_size|default:'1.125rem' }}; --bio-size: {{ theme.bio_size|default:'0.75rem' }};">
+            <div id="public-preview" class="preview-body flex h-full flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-[2.2rem] p-4" data-button-style="{{ theme.button_style|default:'solid' }}" data-button-shadow="{{ theme.button_shadow|default:'subtle' }}" style="--wallpaper: {{ theme.wallpaper|default:'linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)' }}; --text-color: {{ theme.text_color|default:'#f8fafc' }}; --muted-color: rgba(248, 250, 252, 0.7); --button-bg: {{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}; --button-text: {{ theme.button_text|default:'#0b0f14' }}; --button-radius: {{ theme.button_radius|default:'24' }}%; --button-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); --font-header: {{ theme.header_font|default:"'Sora', sans-serif" }}; --font-links: {{ theme.link_font|default:"'Sora', sans-serif" }}; --font-bio: {{ theme.bio_font|default:"'Sora', sans-serif" }}; --name-size: {{ theme.name_size|default:'1.125rem' }}; --bio-size: {{ theme.bio_size|default:'0.75rem' }};">
                 <div class="relative h-32 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5">
                     {% if profile.logo and theme.header_mode != "text" %}
                     <img class="h-full w-full object-cover" src="{{ profile.logo.url }}" alt="Header" />
@@ -96,28 +174,43 @@
                     <p class="preview-bio mt-2" style="color: var(--muted-color); font-size: var(--bio-size, 0.75rem);">{{ content.bio }}</p>
                     {% endif %}
                 </div>
-                <div class="space-y-3 text-sm">
+                <div class="flex items-center justify-center gap-3 text-sm">
                     {% if content.phone %}
-                    <a class="preview-btn solid block px-4 py-2 text-center font-semibold" href="tel:{{ content.phone }}" data-action-type="call" data-action-value="{{ content.phone }}">Call</a>
+                    <a class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="tel:{{ content.phone }}" data-action-type="call" data-action-value="{{ content.phone }}" aria-label="Call">
+                        <span class="iconify" data-icon="mdi:phone" aria-hidden="true"></span>
+                        <span class="sr-only">Call</span>
+                    </a>
                     {% endif %}
                     {% if content.whatsapp %}
-                    <a class="preview-btn solid block px-4 py-2 text-center font-semibold" href="https://wa.me/{{ content.whatsapp|cut:'+' }}" data-action-type="whatsapp" data-action-value="{{ content.whatsapp }}">WhatsApp</a>
+                    <a class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="https://wa.me/{{ content.whatsapp|cut:'+' }}" data-action-type="whatsapp" data-action-value="{{ content.whatsapp }}" aria-label="WhatsApp">
+                        <span class="iconify" data-icon="mdi:whatsapp" aria-hidden="true"></span>
+                        <span class="sr-only">WhatsApp</span>
+                    </a>
                     {% endif %}
                     {% if content.email %}
-                    <a class="preview-btn solid block px-4 py-2 text-center font-semibold" href="mailto:{{ content.email }}" data-action-type="email" data-action-value="{{ content.email }}">Email</a>
+                    <a class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="mailto:{{ content.email }}" data-action-type="email" data-action-value="{{ content.email }}" aria-label="Email">
+                        <span class="iconify" data-icon="mdi:email" aria-hidden="true"></span>
+                        <span class="sr-only">Email</span>
+                    </a>
                     {% endif %}
                     {% if content.website %}
-                    <a class="preview-btn solid block px-4 py-2 text-center font-semibold" href="{{ content.website }}" data-action-type="website" data-action-value="{{ content.website }}">Website</a>
+                    <a class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="{{ content.website }}" data-action-type="website" data-action-value="{{ content.website }}" aria-label="Website">
+                        <span class="iconify" data-icon="mdi:web" aria-hidden="true"></span>
+                        <span class="sr-only">Website</span>
+                    </a>
                     {% endif %}
-                    <a class="preview-btn outline block px-4 py-2 text-center text-xs font-semibold" href="{{ vcard_url }}" data-action-type="save_contact">Save contact</a>
+                    <a class="preview-btn outline flex items-center justify-center gap-2 px-6 py-4 text-center text-base font-semibold" href="{{ vcard_url }}" data-action-type="save_contact">
+                        <span class="iconify" data-icon="mdi:phone" aria-hidden="true"></span>
+                        <span>Save</span>
+                    </a>
                 </div>
-                <div class="space-y-2 text-sm">
+                <div class="link-buttons w-full space-y-4 text-sm">
                     {% if content.links %}
                         {% for link in content.links %}
-                        <a class="preview-btn solid block px-4 py-2 text-center text-xs font-semibold" href="{{ link.url }}" data-action-type="social" data-action-value="{{ link.url }}">{{ link.label|default:link.url }}</a>
+                        <a class="preview-btn solid block w-full px-6 py-4 text-center text-base font-semibold" href="{{ link.url }}" data-action-type="social" data-action-value="{{ link.url }}">{{ link.label|default:link.url }}</a>
                         {% endfor %}
                     {% else %}
-                    <div class="preview-btn outline block px-4 py-2 text-center text-xs font-semibold">Add your first link</div>
+                    <div class="preview-btn outline block w-full px-6 py-4 text-center text-base font-semibold">Add your first link</div>
                     {% endif %}
                 </div>
                 {% if theme.footer_show|default:True %}
@@ -154,7 +247,7 @@
         }
         preview.style.setProperty("--button-shadow", shadowMap[shadow] || shadowMap.subtle);
         preview.querySelectorAll(".preview-btn").forEach((btn) => {
-            btn.classList.remove("solid", "glass", "outline");
+            btn.classList.remove("solid", "glass", "outline", "block", "rise");
             btn.classList.add(style);
         });
     }

@@ -7,37 +7,91 @@
             <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Mobile preview</div>
             <div class="mt-4 w-full max-w-[414px]">
                 <div class="relative w-full overflow-hidden rounded-[2.5rem] border border-tt-border bg-tt-card shadow-[0_25px_60px_rgba(0,0,0,0.55)]" style="aspect-ratio: 414 / 896;">
-                    <div id="preview-body" class="preview-body flex h-full flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-[2.2rem] p-4" style="--primary: {{ theme.primary|default:'#0d6efd' }}; --accent: {{ theme.accent|default:'#f59e0b' }}; --wallpaper: {{ theme.wallpaper|default:'linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)' }}; --text-color: {{ theme.text_color|default:'#f8fafc' }}; --muted-color: rgba(248, 250, 252, 0.7); --button-bg: {{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}; --button-text: {{ theme.button_text|default:'#0b0f14' }}; --button-radius: {{ theme.button_radius|default:'100' }}%; --button-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); --font-header: {{ theme.header_font|default:"'Sora', sans-serif" }}; --font-links: {{ theme.link_font|default:"'Sora', sans-serif" }}; --font-bio: {{ theme.bio_font|default:"'Sora', sans-serif" }}; --name-size: {{ theme.name_size|default:'1.125rem' }}; --bio-size: {{ theme.bio_size|default:'0.75rem' }};">
-                        <div id="preview-header" class="relative h-32 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5">
-                            <img id="preview-header-image" class="h-full w-full object-cover {% if not profile.logo %}hidden{% endif %}" src="{% if profile.logo %}{{ profile.logo.url }}{% endif %}" alt="Header" />
-                            <div id="preview-header-text" class="preview-header-text absolute inset-0 flex items-center justify-center px-4 text-center text-lg font-semibold text-white {% if profile.logo %}hidden{% endif %}">Your headline</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="relative mx-auto h-16 w-16">
-                                <img id="preview-avatar-image" class="hidden h-16 w-16 rounded-full border border-white/20 object-cover" alt="Avatar" />
-                                <div id="preview-avatar" class="flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sm font-semibold" style="border-color: var(--accent); color: var(--accent);">TT</div>
+                    <div id="preview-body" class="preview-body flex h-full flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-[2.2rem] p-4" style="--primary: {{ theme.primary|default:'#0d6efd' }}; --accent: {{ theme.accent|default:'#f59e0b' }}; --wallpaper: {{ theme.wallpaper|default:'linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)' }}; --text-color: {{ theme.text_color|default:'#f8fafc' }}; --muted-color: rgba(248, 250, 252, 0.7); --button-bg: {{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}; --button-text: {{ theme.button_text|default:'#0b0f14' }}; --button-radius: {{ theme.button_radius|default:'24' }}%; --button-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); --font-header: {{ theme.header_font|default:"'Sora', sans-serif" }}; --font-links: {{ theme.link_font|default:"'Sora', sans-serif" }}; --font-bio: {{ theme.bio_font|default:"'Sora', sans-serif" }}; --name-size: {{ theme.name_size|default:'1.125rem' }}; --bio-size: {{ theme.bio_size|default:'0.75rem' }};">
+                        <div id="preview-business" class="flex min-h-full flex-1 flex-col gap-4">
+                            <div id="preview-header" class="relative h-32 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5">
+                                <img id="preview-header-image" class="h-full w-full object-cover {% if not profile.logo %}hidden{% endif %}" src="{% if profile.logo %}{{ profile.logo.url }}{% endif %}" alt="Header" />
+                                <div id="preview-header-text" class="preview-header-text absolute inset-0 flex items-center justify-center px-4 text-center text-lg font-semibold text-white {% if profile.logo %}hidden{% endif %}">Your headline</div>
                             </div>
-                            <h4 id="preview-name" class="mt-3 font-semibold" style="color: var(--text-color); font-size: var(--name-size, 1.125rem); font-family: var(--font-header);">{{ content.full_name|default:profile.customer.full_name }}</h4>
-                            <p id="preview-title" class="text-xs" style="color: var(--muted-color);">{{ content.title }}</p>
-                            <p id="preview-company" class="text-xs" style="color: var(--muted-color);">{{ content.company }}</p>
-                            <p id="preview-bio" class="preview-bio mt-2" style="color: var(--muted-color); font-size: var(--bio-size, 0.75rem);">{{ content.bio }}</p>
+                            <div class="text-center">
+                                <div class="relative mx-auto h-16 w-16">
+                                    <img id="preview-avatar-image" class="hidden h-16 w-16 rounded-full border border-white/20 object-cover" alt="Avatar" />
+                                    <div id="preview-avatar" class="flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-white/10 text-sm font-semibold" style="border-color: var(--accent); color: var(--accent);">TT</div>
+                                </div>
+                                <h4 id="preview-name" class="mt-3 font-semibold" style="color: var(--text-color); font-size: var(--name-size, 1.125rem); font-family: var(--font-header);">{{ content.full_name|default:profile.customer.full_name }}</h4>
+                                <p id="preview-title" class="text-xs" style="color: var(--muted-color);">{{ content.title }}</p>
+                                <p id="preview-company" class="text-xs" style="color: var(--muted-color);">{{ content.company }}</p>
+                                <p id="preview-bio" class="preview-bio mt-2" style="color: var(--muted-color); font-size: var(--bio-size, 0.75rem);">{{ content.bio }}</p>
+                            </div>
+                        <div class="flex items-center justify-center gap-3 text-sm" id="preview-actions">
+                            <a id="preview-call" class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="#" aria-label="Call">
+                                <span class="iconify" data-icon="mdi:phone" aria-hidden="true"></span>
+                                <span class="sr-only">Call</span>
+                            </a>
+                            <a id="preview-whatsapp" class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="#" aria-label="WhatsApp">
+                                <span class="iconify" data-icon="mdi:whatsapp" aria-hidden="true"></span>
+                                <span class="sr-only">WhatsApp</span>
+                            </a>
+                            <a id="preview-email" class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="#" aria-label="Email">
+                                <span class="iconify" data-icon="mdi:email" aria-hidden="true"></span>
+                                <span class="sr-only">Email</span>
+                            </a>
+                            <a id="preview-website" class="icon-action flex h-12 w-12 items-center justify-center text-xl" href="#" aria-label="Website">
+                                <span class="iconify" data-icon="mdi:web" aria-hidden="true"></span>
+                                <span class="sr-only">Website</span>
+                            </a>
                         </div>
-                        <div class="space-y-3 text-sm" id="preview-actions">
-                            <a id="preview-call" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">Call</a>
-                            <a id="preview-whatsapp" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">WhatsApp</a>
-                            <a id="preview-email" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">Email</a>
-                            <a id="preview-website" class="preview-btn solid block px-4 py-2 text-center font-semibold" href="#">Website</a>
+                            <div class="space-y-4 text-sm" id="preview-links">
+                                {% if content.links %}
+                                    {% for link in content.links %}
+                                    <div class="preview-btn solid block w-full px-6 py-4 text-center text-base font-semibold">{{ link.label|default:link.url }}</div>
+                                    {% endfor %}
+                                {% else %}
+                                <div class="preview-btn outline block w-full px-6 py-4 text-center text-base font-semibold">Add your first link</div>
+                                {% endif %}
+                            </div>
+                            <div id="preview-footer" class="mt-auto pt-2 text-center text-[10px] uppercase tracking-[0.2em]" style="color: var(--muted-color);">Made by 10minal</div>
                         </div>
-                        <div class="space-y-2 text-sm" id="preview-links">
-                            {% if content.links %}
-                                {% for link in content.links %}
-                                <div class="preview-btn solid block px-4 py-2 text-center font-semibold">{{ link.label|default:link.url }}</div>
-                                {% endfor %}
-                            {% else %}
-                            <div class="preview-btn outline block px-4 py-2 text-center text-xs font-semibold">Add your first link</div>
-                            {% endif %}
+
+                        <div id="preview-portfolio" class="hidden flex min-h-full flex-1 flex-col gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="relative h-14 w-14">
+                                    <img id="preview-portfolio-avatar-image" class="hidden h-14 w-14 rounded-2xl border border-white/20 object-cover" alt="Avatar" />
+                                    <div id="preview-portfolio-avatar" class="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-sm font-semibold" style="border-color: var(--accent); color: var(--accent);">TT</div>
+                                </div>
+                                <div>
+                                    <div id="preview-portfolio-name" class="text-sm font-semibold text-slate-100">{{ content.full_name|default:profile.customer.full_name }}</div>
+                                    <div id="preview-portfolio-position" class="text-xs text-tt-muted"></div>
+                                    <div id="preview-portfolio-jobtype" class="text-[10px] uppercase tracking-[0.2em] text-tt-muted"></div>
+                                </div>
+                            </div>
+                            <div id="preview-portfolio-headline" class="rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-xs text-tt-muted"></div>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-[0.2em] text-tt-muted">Interests</div>
+                                <div id="preview-portfolio-interests" class="mt-2 flex flex-wrap gap-2"></div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-[0.2em] text-tt-muted">Experience</div>
+                                <div id="preview-portfolio-experience" class="mt-2 space-y-2"></div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-[0.2em] text-tt-muted">Education</div>
+                                <div id="preview-portfolio-education" class="mt-2 space-y-2"></div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-[0.2em] text-tt-muted">Tools</div>
+                                <div id="preview-portfolio-tools" class="mt-2 flex flex-wrap gap-2"></div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-[0.2em] text-tt-muted">Languages</div>
+                                <div id="preview-portfolio-languages" class="mt-2 flex flex-wrap gap-2"></div>
+                            </div>
+                            <div>
+                                <div class="text-[10px] uppercase tracking-[0.2em] text-tt-muted">Links</div>
+                                <div id="preview-portfolio-links" class="mt-2 flex flex-wrap gap-2"></div>
+                            </div>
+                            <div id="preview-portfolio-footer" class="mt-auto pt-2 text-center text-[10px] uppercase tracking-[0.2em]" style="color: var(--muted-color);">Made by 10minal</div>
                         </div>
-                        <div id="preview-footer" class="mt-auto pt-2 text-center text-[10px] uppercase tracking-[0.2em]" style="color: var(--muted-color);">Made by 10minal</div>
                     </div>
                 </div>
             </div>
@@ -79,6 +133,77 @@
             color: var(--button-text);
             backdrop-filter: blur(12px);
         }
+        .preview-btn.block {
+            background: transparent;
+            border: 1px solid var(--button-bg);
+            color: var(--button-bg);
+        }
+        .preview-btn.rise {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: var(--text-color);
+        }
+        #preview-links .preview-btn.block {
+            background: linear-gradient(90deg, var(--button-bg), var(--accent));
+            border: 2px solid var(--button-text);
+            color: var(--button-text);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            box-shadow: 3px 3px 0 var(--button-text);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            text-align: left;
+        }
+        #preview-links .preview-btn {
+            width: 100%;
+        }
+        #preview-links .preview-btn.block::after {
+            content: "";
+            width: 4px;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--button-text);
+            box-shadow: 0 6px 0 var(--button-text), 0 12px 0 var(--button-text);
+            flex-shrink: 0;
+        }
+        #preview-links .preview-btn.block:hover {
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0 var(--button-text);
+        }
+        #preview-links .preview-btn.rise {
+            position: relative;
+            background: linear-gradient(90deg, var(--button-bg), var(--accent), var(--primary));
+            color: var(--button-text);
+            border-radius: 999px;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            text-align: left;
+            padding-right: 2.75rem;
+        }
+        #preview-links .preview-btn.rise::after {
+            content: "";
+            position: absolute;
+            right: 1rem;
+            width: 4px;
+            height: 4px;
+            border-radius: 999px;
+            background: var(--button-text);
+            box-shadow: 0 6px 0 var(--button-text), 0 12px 0 var(--button-text);
+        }
+        #preview-links .preview-btn.rise:hover {
+            filter: brightness(1.1);
+        }
+        .icon-action {
+            color: var(--text-color);
+        }
+        .icon-action:hover {
+            color: var(--accent);
+        }
     </style>
 
     <form method="post" enctype="multipart/form-data" class="space-y-6">
@@ -93,26 +218,12 @@
 
         <section data-panel="profile" class="space-y-6">
             <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
-                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Personal details</h3>
+                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Identity & contact</h3>
                 <div class="mt-4 grid gap-4 md:grid-cols-2">
                     <div>
                         <label class="text-sm text-tt-muted">Full name</label>
                         {{ form.full_name }}
                     </div>
-                    <div>
-                        <label class="text-sm text-tt-muted">Title</label>
-                        {{ form.title }}
-                    </div>
-                    <div>
-                        <label class="text-sm text-tt-muted">Company</label>
-                        {{ form.company }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
-                <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Contact & login</h3>
-                <div class="mt-4 grid gap-4 md:grid-cols-2">
                     <div>
                         <label class="text-sm text-tt-muted">Phone</label>
                         {{ form.phone }}
@@ -140,6 +251,112 @@
                 <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Bio</h3>
                 <div class="mt-4">
                     {{ form.bio }}
+                </div>
+            </div>
+            <div data-template-panel="business" class="space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Business details</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Title</label>
+                            {{ form.title }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Company</label>
+                            {{ form.company }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div data-template-panel="portfolio" class="hidden space-y-6">
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Portfolio basics</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Position</label>
+                            {{ form.portfolio_position }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Job type</label>
+                            {{ form.portfolio_job_type }}
+                        </div>
+                    </div>
+                    <p class="mt-3 text-xs text-tt-muted">Avatar image is managed in Design > Header.</p>
+                    <div class="mt-4">
+                        <label class="text-sm text-tt-muted">Headline</label>
+                        {{ form.portfolio_headline }}
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Details</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Location</label>
+                            {{ form.portfolio_location }}
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Age</label>
+                            {{ form.portfolio_age }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Interests</h3>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <input id="portfolio-interest-input" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" placeholder="Add an interest" />
+                        <button id="add-interest" type="button" class="rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent">Add</button>
+                    </div>
+                    <div id="portfolio-interest-list" class="mt-3 flex flex-wrap gap-2"></div>
+                </div>
+
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <div class="flex items-center justify-between gap-3">
+                        <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Experience</h3>
+                        <button id="add-experience" type="button" class="rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent">Add experience</button>
+                    </div>
+                    <div id="portfolio-experience-list" class="mt-4 space-y-3"></div>
+                </div>
+
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <div class="flex items-center justify-between gap-3">
+                        <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Education</h3>
+                        <button id="add-education" type="button" class="rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent">Add education</button>
+                    </div>
+                    <div id="portfolio-education-list" class="mt-4 space-y-3"></div>
+                </div>
+
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Tools</h3>
+                    <div class="mt-4 grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="text-sm text-tt-muted">Design tools</label>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <input id="portfolio-design-tool-input" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" placeholder="Add design tool" />
+                                <button id="add-design-tool" type="button" class="rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent">Add</button>
+                            </div>
+                            <div id="portfolio-design-tools" class="mt-3 flex flex-wrap gap-2"></div>
+                        </div>
+                        <div>
+                            <label class="text-sm text-tt-muted">Editing tools</label>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <input id="portfolio-editing-tool-input" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" placeholder="Add editing tool" />
+                                <button id="add-editing-tool" type="button" class="rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent">Add</button>
+                            </div>
+                            <div id="portfolio-editing-tools" class="mt-3 flex flex-wrap gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Languages</h3>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <input id="portfolio-language-input" type="text" class="w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" placeholder="Add a language" />
+                        <button id="add-language" type="button" class="rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent">Add</button>
+                    </div>
+                    <div id="portfolio-language-list" class="mt-3 flex flex-wrap gap-2"></div>
                 </div>
             </div>
         </section>
@@ -208,6 +425,19 @@
                                 <div class="absolute bottom-3 left-3 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">Agate</div>
                             </div>
                         </button>
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#7C3AED" data-accent="#F472B6" data-text="#F8FAFC" data-wallpaper="#7C3AED" data-button-bg="#F472B6" data-button-text="#1f0a3d" data-button-style="block" data-button-radius="12" data-button-shadow="none" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Sora', sans-serif">
+                            <div class="relative h-24 rounded-xl bg-[#7C3AED]">
+                                <div class="absolute inset-x-6 bottom-6 h-6 rounded-md border-2 border-[#0b0f14] bg-[#F472B6]"></div>
+                                <div class="absolute bottom-3 left-3 rounded-full bg-black/20 px-3 py-1 text-xs font-semibold text-white">Blocks</div>
+                            </div>
+                        </button>
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#EC4899" data-accent="#F87171" data-text="#FFFFFF" data-wallpaper="linear-gradient(135deg, #2e1a57 0%, #7a2a7e 30%, #f29f6b 55%, #6aa5c8 75%, #2d2b4f 100%)" data-button-bg="#FB923C" data-button-text="#FFFFFF" data-button-style="rise" data-button-radius="100" data-button-shadow="subtle" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Sora', sans-serif">
+                            <div class="relative h-24 overflow-hidden rounded-xl">
+                                <div class="absolute inset-0 bg-[conic-gradient(from_140deg_at_20%_20%,#6a5adf,#d06fa6,#f0b06e,#5fa5c9,#2d2b4f,#6a5adf)]"></div>
+                                <div class="absolute inset-x-6 bottom-6 h-6 rounded-full border border-white/20 bg-white/10"></div>
+                                <div class="absolute bottom-3 left-3 rounded-full bg-black/20 px-3 py-1 text-xs font-semibold text-white">Rise</div>
+                            </div>
+                        </button>
                         <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#22D3EE" data-accent="#A5F3FC" data-text="#0F172A" data-wallpaper="linear-gradient(180deg, #E2E8F0 0%, #BAE6FD 100%)" data-link-font="'Sora', sans-serif" data-bio-font="'Playfair Display', serif">
                             <div class="relative h-24 rounded-xl bg-gradient-to-br from-sky-200 via-white to-cyan-200">
                                 <div class="absolute bottom-3 left-3 rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold text-white">Air</div>
@@ -266,11 +496,14 @@
                     <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">Templates</h3>
                     <p class="mt-2 text-sm text-tt-muted">Business is active. More layouts coming soon.</p>
                     <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                        <div class="rounded-2xl border border-tt-accent/60 bg-tt-card/80 p-4">
-                            <div class="text-sm font-semibold text-tt-accent">Business</div>
-                            <div class="mt-2 text-xs text-tt-muted">Active template</div>
-                        </div>
-                        <div class="rounded-2xl border border-dashed border-tt-border p-4 text-sm text-tt-muted">Portfolio (coming soon)</div>
+                        <button type="button" class="template-card rounded-2xl border border-tt-border bg-tt-card/80 p-4 text-left" data-template-key="business">
+                            <div class="text-sm font-semibold text-slate-100">Business</div>
+                            <div class="mt-2 text-xs text-tt-muted">Default linktree layout</div>
+                        </button>
+                        <button type="button" class="template-card rounded-2xl border border-tt-border bg-tt-card/80 p-4 text-left" data-template-key="portfolio">
+                            <div class="text-sm font-semibold text-slate-100">Portfolio</div>
+                            <div class="mt-2 text-xs text-tt-muted">Timeline, tools, and interests</div>
+                        </button>
                         <div class="rounded-2xl border border-dashed border-tt-border p-4 text-sm text-tt-muted">Music (coming soon)</div>
                         <div class="rounded-2xl border border-dashed border-tt-border p-4 text-sm text-tt-muted">Restaurant (coming soon)</div>
                     </div>
@@ -355,6 +588,8 @@
                         <button type="button" class="button-style rounded-full bg-tt-card px-4 py-2 text-sm font-semibold text-tt-accent" data-button-style="solid">Solid</button>
                         <button type="button" class="button-style rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-style="glass">Glass</button>
                         <button type="button" class="button-style rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-style="outline">Outline</button>
+                        <button type="button" class="button-style rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-style="block">Blocks</button>
+                        <button type="button" class="button-style rounded-full border border-tt-border px-4 py-2 text-sm font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" data-button-style="rise">Rise</button>
                     </div>
                     <div class="mt-4 grid gap-4 md:grid-cols-2">
                         <div>
@@ -362,7 +597,7 @@
                                 Corners
                                 <span id="button-radius-value" class="text-xs text-slate-100">100%</span>
                             </label>
-                            <input id="button-radius" type="range" min="0" max="100" value="{{ theme.button_radius|default:'100' }}" class="mt-2 w-full" />
+                            <input id="button-radius" type="range" min="0" max="100" value="{{ theme.button_radius|default:'24' }}" class="mt-2 w-full" />
                         </div>
                         <div>
                             <label class="text-sm text-tt-muted">Shadow</label>
@@ -405,8 +640,45 @@
             <button class="w-full rounded-full bg-gradient-to-r from-tt-accent to-tt-accent2 px-6 py-2 text-sm font-semibold text-slate-950" type="submit">Save changes</button>
         </div>
 
+        <div class="rounded-2xl border border-dashed border-tt-border bg-tt-panel/40 p-4">
+            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Test button</div>
+            <button
+                type="button"
+                class="mt-3 flex w-64 items-center justify-between border-2 border-black bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-3 font-medium text-black shadow-[3px_3px_0_0_#000] transition-all duration-150 hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0_0_#000]"
+            >
+                <span>Instagram</span>
+                <span class="flex flex-col gap-1">
+                    <span class="h-1 w-1 rounded-full bg-black"></span>
+                    <span class="h-1 w-1 rounded-full bg-black"></span>
+                    <span class="h-1 w-1 rounded-full bg-black"></span>
+                </span>
+            </button>
+        </div>
+
+        <div class="rounded-2xl border border-dashed border-tt-border bg-tt-panel/40 p-4">
+            <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Test button</div>
+            <button
+                type="button"
+                class="relative mt-3 flex w-64 items-center justify-between rounded-full bg-gradient-to-r from-orange-400 via-red-400 to-pink-500 px-5 py-3 font-medium text-white ring-1 ring-white/60 transition-all duration-200 hover:brightness-110"
+            >
+                <span class="mx-auto">Audiomack</span>
+                <span class="absolute right-4 flex flex-col gap-1">
+                    <span class="h-1 w-1 rounded-full bg-white"></span>
+                    <span class="h-1 w-1 rounded-full bg-white"></span>
+                    <span class="h-1 w-1 rounded-full bg-white"></span>
+                </span>
+            </button>
+        </div>
+
         <div class="hidden">
             {{ form.links_text }}
+            {{ form.template_key }}
+            {{ form.portfolio_interests }}
+            {{ form.portfolio_tools_design }}
+            {{ form.portfolio_tools_editing }}
+            {{ form.portfolio_languages }}
+            {{ form.portfolio_experience }}
+            {{ form.portfolio_education }}
             {{ form.layout }}
             {{ form.header_mode }}
             {{ form.header_text }}
@@ -515,12 +787,72 @@
         layoutField.value = "linktree";
     }
 
+    const templateField = document.getElementById("id_template_key");
+    const templateCards = document.querySelectorAll("[data-template-key]");
+    const templatePanels = document.querySelectorAll("[data-template-panel]");
+    const previewBusiness = document.getElementById("preview-business");
+    const previewPortfolio = document.getElementById("preview-portfolio");
+    const previewPortfolioName = document.getElementById("preview-portfolio-name");
+    const previewPortfolioPosition = document.getElementById("preview-portfolio-position");
+    const previewPortfolioJobtype = document.getElementById("preview-portfolio-jobtype");
+    const previewPortfolioHeadline = document.getElementById("preview-portfolio-headline");
+    const previewPortfolioInterests = document.getElementById("preview-portfolio-interests");
+    const previewPortfolioExperience = document.getElementById("preview-portfolio-experience");
+    const previewPortfolioEducation = document.getElementById("preview-portfolio-education");
+    const previewPortfolioTools = document.getElementById("preview-portfolio-tools");
+    const previewPortfolioLanguages = document.getElementById("preview-portfolio-languages");
+    const previewPortfolioLinks = document.getElementById("preview-portfolio-links");
+    const previewPortfolioFooter = document.getElementById("preview-portfolio-footer");
+    const previewPortfolioAvatar = document.getElementById("preview-portfolio-avatar");
+    const previewPortfolioAvatarImage = document.getElementById("preview-portfolio-avatar-image");
+
+    function setTemplate(key) {
+        if (templateField) {
+            templateField.value = key;
+        }
+        templatePanels.forEach((panel) => {
+            panel.classList.toggle("hidden", panel.dataset.templatePanel !== key);
+        });
+        templateCards.forEach((card) => {
+            const isActive = card.dataset.templateKey === key;
+            card.classList.toggle("border-tt-accent", isActive);
+            card.classList.toggle("text-tt-accent", isActive);
+        });
+        if (previewBusiness) {
+            previewBusiness.classList.toggle("hidden", key !== "business");
+        }
+        if (previewPortfolio) {
+            previewPortfolio.classList.toggle("hidden", key !== "portfolio");
+        }
+    }
+
     const headerModeButtons = document.querySelectorAll("[data-header-mode]");
     const headerImageControls = document.getElementById("header-image-controls");
     const headerTextControls = document.getElementById("header-text-controls");
     const headerTextInput = document.getElementById("header-text-input");
     const headerFontSelect = document.getElementById("header-font");
     const logoInput = document.getElementById("id_logo");
+
+    const initialTemplate = templateField?.value || "business";
+    setTemplate(initialTemplate);
+    templateCards.forEach((card) => {
+        card.addEventListener("click", () => {
+            setTemplate(card.dataset.templateKey);
+        });
+    });
+    const profileForm = document.querySelector("form");
+    if (profileForm) {
+        profileForm.addEventListener("submit", (event) => {
+            if (templateField && templateField.value !== initialTemplate) {
+                const proceed = confirm(
+                    "Saving will reset fields to this template only. Continue?"
+                );
+                if (!proceed) {
+                    event.preventDefault();
+                }
+            }
+        });
+    }
 
     const linkFontSelect = document.getElementById("link-font");
     const bioFontSelect = document.getElementById("bio-font");
@@ -555,7 +887,7 @@
             buttonStyleField.value = style;
         }
         document.querySelectorAll(".preview-btn").forEach((btn) => {
-            btn.classList.remove("solid", "glass", "outline");
+            btn.classList.remove("solid", "glass", "outline", "block", "rise");
             btn.classList.add(style);
         });
         buttonStyleButtons.forEach((btn) => {
@@ -768,6 +1100,11 @@
             const wallpaper = card.dataset.wallpaper;
             const linkFont = card.dataset.linkFont;
             const bioFont = card.dataset.bioFont;
+            const buttonStyle = card.dataset.buttonStyle;
+            const buttonRadius = card.dataset.buttonRadius;
+            const buttonShadow = card.dataset.buttonShadow;
+            const buttonBg = card.dataset.buttonBg;
+            const buttonText = card.dataset.buttonText;
 
             if (themePrimaryInput && primary) {
                 themePrimaryInput.value = primary;
@@ -801,6 +1138,34 @@
                 if (bioFontField) {
                     bioFontField.value = bioFont;
                 }
+            }
+            if (buttonBg && buttonBgInput) {
+                buttonBgInput.value = buttonBg;
+                previewBody?.style.setProperty("--button-bg", buttonBg);
+                if (buttonBgField) {
+                    buttonBgField.value = buttonBg;
+                }
+            }
+            if (buttonText && buttonTextInput) {
+                buttonTextInput.value = buttonText;
+                previewBody?.style.setProperty("--button-text", buttonText);
+                if (buttonTextField) {
+                    buttonTextField.value = buttonText;
+                }
+            }
+            if (buttonStyle) {
+                applyButtonStyle(buttonStyle);
+            }
+            if (buttonRadius && buttonRadiusInput && buttonRadiusValue) {
+                buttonRadiusInput.value = buttonRadius;
+                buttonRadiusValue.textContent = `${buttonRadius}%`;
+                previewBody?.style.setProperty("--button-radius", `${buttonRadius}%`);
+                if (buttonRadiusField) {
+                    buttonRadiusField.value = buttonRadius;
+                }
+            }
+            if (buttonShadow) {
+                setButtonShadow(buttonShadow);
             }
         });
     });
@@ -856,6 +1221,10 @@
                 previewAvatarImage.classList.add("hidden");
                 previewAvatar.classList.remove("hidden");
             }
+            if (previewPortfolioAvatarImage && previewPortfolioAvatar) {
+                previewPortfolioAvatarImage.classList.add("hidden");
+                previewPortfolioAvatar.classList.remove("hidden");
+            }
             if (previewHeaderImage) {
                 previewHeaderImage.classList.add("hidden");
             }
@@ -872,6 +1241,11 @@
                 previewAvatarImage.classList.remove("hidden");
                 previewAvatar.classList.add("hidden");
             }
+            if (previewPortfolioAvatarImage && previewPortfolioAvatar) {
+                previewPortfolioAvatarImage.src = result;
+                previewPortfolioAvatarImage.classList.remove("hidden");
+                previewPortfolioAvatar.classList.add("hidden");
+            }
             if (previewHeaderImage) {
                 previewHeaderImage.src = result;
                 previewHeaderImage.classList.remove("hidden");
@@ -885,6 +1259,11 @@
         previewAvatarImage.src = headerSrc;
         previewAvatarImage.classList.remove("hidden");
         previewAvatar.classList.add("hidden");
+        if (previewPortfolioAvatarImage && previewPortfolioAvatar) {
+            previewPortfolioAvatarImage.src = headerSrc;
+            previewPortfolioAvatarImage.classList.remove("hidden");
+            previewPortfolioAvatar.classList.add("hidden");
+        }
     }
 
     buttonStyleButtons.forEach((btn) => {
@@ -936,6 +1315,9 @@
         if (previewFooter) {
             previewFooter.classList.toggle("hidden", !footerToggle.checked);
         }
+        if (previewPortfolioFooter) {
+            previewPortfolioFooter.classList.toggle("hidden", !footerToggle.checked);
+        }
         if (footerShowField) {
             footerShowField.value = footerToggle.checked ? "true" : "false";
         }
@@ -943,6 +1325,9 @@
     footerTextInput?.addEventListener("input", () => {
         if (previewFooter) {
             previewFooter.textContent = footerTextInput.value || "Made by 10minal";
+        }
+        if (previewPortfolioFooter) {
+            previewPortfolioFooter.textContent = footerTextInput.value || "Made by 10minal";
         }
         if (footerTextField) {
             footerTextField.value = footerTextInput.value || "Made by 10minal";
@@ -954,6 +1339,68 @@
     const linksList = document.getElementById("links-list");
     const previewLinks = document.getElementById("preview-links");
     const links = [];
+    const portfolioHeadlineInput = document.getElementById("id_portfolio_headline");
+    const portfolioJobTypeSelect = document.getElementById("id_portfolio_job_type");
+    const portfolioPositionInput = document.getElementById("id_portfolio_position");
+    const portfolioLocationInput = document.getElementById("id_portfolio_location");
+    const portfolioAgeInput = document.getElementById("id_portfolio_age");
+    const portfolioInterestsField = document.getElementById("id_portfolio_interests");
+    const portfolioDesignToolsField = document.getElementById("id_portfolio_tools_design");
+    const portfolioEditingToolsField = document.getElementById("id_portfolio_tools_editing");
+    const portfolioLanguagesField = document.getElementById("id_portfolio_languages");
+    const portfolioExperienceField = document.getElementById("id_portfolio_experience");
+    const portfolioEducationField = document.getElementById("id_portfolio_education");
+
+    const portfolioInterestInput = document.getElementById("portfolio-interest-input");
+    const addInterestButton = document.getElementById("add-interest");
+    const portfolioInterestList = document.getElementById("portfolio-interest-list");
+    const portfolioDesignToolInput = document.getElementById("portfolio-design-tool-input");
+    const addDesignToolButton = document.getElementById("add-design-tool");
+    const portfolioDesignTools = document.getElementById("portfolio-design-tools");
+    const portfolioEditingToolInput = document.getElementById("portfolio-editing-tool-input");
+    const addEditingToolButton = document.getElementById("add-editing-tool");
+    const portfolioEditingTools = document.getElementById("portfolio-editing-tools");
+    const portfolioLanguageInput = document.getElementById("portfolio-language-input");
+    const addLanguageButton = document.getElementById("add-language");
+    const portfolioLanguageList = document.getElementById("portfolio-language-list");
+    const portfolioExperienceList = document.getElementById("portfolio-experience-list");
+    const addExperienceButton = document.getElementById("add-experience");
+    const portfolioEducationList = document.getElementById("portfolio-education-list");
+    const addEducationButton = document.getElementById("add-education");
+
+    function safeJsonList(value) {
+        if (!value) {
+            return [];
+        }
+        try {
+            const parsed = JSON.parse(value);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    const portfolioInterests = safeJsonList(portfolioInterestsField?.value);
+    const portfolioDesignToolItems = safeJsonList(portfolioDesignToolsField?.value);
+    const portfolioEditingToolItems = safeJsonList(portfolioEditingToolsField?.value);
+    const portfolioLanguageItems = safeJsonList(portfolioLanguagesField?.value);
+    let portfolioExperience = safeJsonList(portfolioExperienceField?.value);
+    let portfolioEducation = safeJsonList(portfolioEducationField?.value);
+
+    portfolioExperience = portfolioExperience.map((item) => ({
+        company: item?.company || "",
+        role: item?.role || "",
+        start: item?.start || "",
+        end: item?.end || "",
+        highlights: Array.isArray(item?.highlights) ? item.highlights : [],
+    }));
+    portfolioEducation = portfolioEducation.map((item) => ({
+        school: item?.school || "",
+        program: item?.program || "",
+        start: item?.start || "",
+        end: item?.end || "",
+        location: item?.location || "",
+    }));
 
     function normalizeUrl(value) {
         if (!value) {
@@ -964,6 +1411,55 @@
             url = `https://${url}`;
         }
         return url;
+    }
+
+    function renderTagList(list, container, emptyLabel) {
+        if (!container) {
+            return;
+        }
+        container.innerHTML = "";
+        if (!list.length) {
+            container.innerHTML = `<span class="text-xs text-tt-muted">${emptyLabel}</span>`;
+            return;
+        }
+        list.forEach((item, index) => {
+            const tag = document.createElement("button");
+            tag.type = "button";
+            tag.className =
+                "inline-flex items-center gap-2 rounded-full border border-tt-border bg-tt-card/60 px-3 py-1 text-xs font-semibold text-slate-100";
+            tag.dataset.removeIndex = String(index);
+            const text = document.createElement("span");
+            text.textContent = item;
+            const remove = document.createElement("span");
+            remove.className = "text-tt-accent";
+            remove.textContent = "x";
+            tag.appendChild(text);
+            tag.appendChild(remove);
+            container.appendChild(tag);
+        });
+    }
+
+    function renderPreviewTags(list, container, emptyLabel) {
+        if (!container) {
+            return;
+        }
+        container.innerHTML = "";
+        if (!list.length) {
+            container.innerHTML = `<div class="rounded-full border border-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-tt-muted">${emptyLabel}</div>`;
+            return;
+        }
+        list.forEach((item) => {
+            const tag = document.createElement("div");
+            tag.className = "rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-semibold text-slate-100";
+            tag.textContent = item;
+            container.appendChild(tag);
+        });
+    }
+
+    function syncHiddenList(field, list) {
+        if (field) {
+            field.value = JSON.stringify(list);
+        }
     }
 
     function inferPlatformName(url) {
@@ -994,11 +1490,213 @@
         }
     }
 
+    function renderPreviewTimeline(list, container, emptyLabel, titleKey, subtitleKey) {
+        if (!container) {
+            return;
+        }
+        container.innerHTML = "";
+        if (!list.length) {
+            container.innerHTML = `<div class="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.2em] text-tt-muted">${emptyLabel}</div>`;
+            return;
+        }
+        list.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "rounded-2xl border border-white/10 bg-white/5 px-3 py-2";
+            const title = document.createElement("div");
+            title.className = "text-xs font-semibold text-slate-100";
+            title.textContent = item[titleKey] || "Untitled";
+            const subtitle = document.createElement("div");
+            subtitle.className = "text-[10px] uppercase tracking-[0.2em] text-tt-muted";
+            subtitle.textContent = item[subtitleKey] || "";
+            card.appendChild(title);
+            if (subtitle.textContent) {
+                card.appendChild(subtitle);
+            }
+            container.appendChild(card);
+        });
+    }
+
+    function updatePortfolioPreview() {
+        const name = document.getElementById("id_full_name")?.value || "Your name";
+        const headline = portfolioHeadlineInput?.value || "Add your headline";
+        const position = portfolioPositionInput?.value || "";
+        const jobTypeOption = portfolioJobTypeSelect
+            ? portfolioJobTypeSelect.options[portfolioJobTypeSelect.selectedIndex]
+            : null;
+        const jobType = jobTypeOption && jobTypeOption.value ? jobTypeOption.text : "";
+
+        if (previewPortfolioName) {
+            previewPortfolioName.textContent = name;
+        }
+        if (previewPortfolioPosition) {
+            previewPortfolioPosition.textContent = position;
+            previewPortfolioPosition.classList.toggle("hidden", !position);
+        }
+        if (previewPortfolioJobtype) {
+            previewPortfolioJobtype.textContent = jobType;
+            previewPortfolioJobtype.classList.toggle("hidden", !jobType);
+        }
+        if (previewPortfolioHeadline) {
+            previewPortfolioHeadline.textContent = headline;
+        }
+
+        if (previewPortfolioAvatar && !previewPortfolioAvatarImage?.classList.contains("hidden")) {
+            previewPortfolioAvatar.classList.add("hidden");
+        } else if (previewPortfolioAvatar) {
+            const initials = name
+                .split(" ")
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((part) => part[0].toUpperCase())
+                .join("");
+            previewPortfolioAvatar.textContent = initials || "TT";
+        }
+
+        renderPreviewTags(portfolioInterests, previewPortfolioInterests, "No interests");
+        const tools = [...portfolioDesignToolItems, ...portfolioEditingToolItems];
+        renderPreviewTags(tools, previewPortfolioTools, "No tools");
+        renderPreviewTags(portfolioLanguageItems, previewPortfolioLanguages, "No languages");
+        renderPreviewTimeline(
+            portfolioExperience,
+            previewPortfolioExperience,
+            "No experience",
+            "company",
+            "role"
+        );
+        renderPreviewTimeline(
+            portfolioEducation,
+            previewPortfolioEducation,
+            "No education",
+            "school",
+            "program"
+        );
+    }
+
+    function renderPortfolioInterests() {
+        renderTagList(portfolioInterests, portfolioInterestList, "No interests yet.");
+        syncHiddenList(portfolioInterestsField, portfolioInterests);
+        updatePortfolioPreview();
+    }
+
+    function renderDesignTools() {
+        renderTagList(portfolioDesignToolItems, portfolioDesignTools, "No design tools yet.");
+        syncHiddenList(portfolioDesignToolsField, portfolioDesignToolItems);
+        updatePortfolioPreview();
+    }
+
+    function renderEditingTools() {
+        renderTagList(portfolioEditingToolItems, portfolioEditingTools, "No editing tools yet.");
+        syncHiddenList(portfolioEditingToolsField, portfolioEditingToolItems);
+        updatePortfolioPreview();
+    }
+
+    function renderLanguages() {
+        renderTagList(portfolioLanguageItems, portfolioLanguageList, "No languages yet.");
+        syncHiddenList(portfolioLanguagesField, portfolioLanguageItems);
+        updatePortfolioPreview();
+    }
+
+    function renderExperience() {
+        if (!portfolioExperienceList) {
+            return;
+        }
+        portfolioExperienceList.innerHTML = "";
+        if (!portfolioExperience.length) {
+            portfolioExperienceList.innerHTML =
+                '<div class="rounded-xl border border-dashed border-tt-border px-4 py-6 text-center text-sm text-tt-muted">No experience yet.</div>';
+        } else {
+            portfolioExperience.forEach((item, index) => {
+                const card = document.createElement("div");
+                card.className = "rounded-2xl border border-tt-border bg-tt-card/80 px-4 py-4";
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="flex-1 space-y-3">
+                            <div class="grid gap-3 md:grid-cols-2">
+                                <div>
+                                    <label class="text-xs text-tt-muted">Company</label>
+                                    <input data-exp-index="${index}" data-exp-field="company" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.company || ""}">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-tt-muted">Role</label>
+                                    <input data-exp-index="${index}" data-exp-field="role" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.role || ""}">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-tt-muted">Start</label>
+                                    <input data-exp-index="${index}" data-exp-field="start" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.start || ""}">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-tt-muted">End</label>
+                                    <input data-exp-index="${index}" data-exp-field="end" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.end || ""}">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-tt-muted">Highlights (one per line)</label>
+                                <textarea data-exp-index="${index}" data-exp-field="highlights" rows="3" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40">${(item.highlights || []).join("\n")}</textarea>
+                            </div>
+                        </div>
+                        <button type="button" class="rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-red-400 hover:text-red-300" data-remove-exp="${index}">Remove</button>
+                    </div>
+                `;
+                portfolioExperienceList.appendChild(card);
+            });
+        }
+        syncHiddenList(portfolioExperienceField, portfolioExperience);
+        updatePortfolioPreview();
+    }
+
+    function renderEducation() {
+        if (!portfolioEducationList) {
+            return;
+        }
+        portfolioEducationList.innerHTML = "";
+        if (!portfolioEducation.length) {
+            portfolioEducationList.innerHTML =
+                '<div class="rounded-xl border border-dashed border-tt-border px-4 py-6 text-center text-sm text-tt-muted">No education yet.</div>';
+        } else {
+            portfolioEducation.forEach((item, index) => {
+                const card = document.createElement("div");
+                card.className = "rounded-2xl border border-tt-border bg-tt-card/80 px-4 py-4";
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                        <div class="flex-1 space-y-3">
+                            <div class="grid gap-3 md:grid-cols-2">
+                                <div>
+                                    <label class="text-xs text-tt-muted">School</label>
+                                    <input data-edu-index="${index}" data-edu-field="school" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.school || ""}">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-tt-muted">Program</label>
+                                    <input data-edu-index="${index}" data-edu-field="program" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.program || ""}">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-tt-muted">Start</label>
+                                    <input data-edu-index="${index}" data-edu-field="start" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.start || ""}">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-tt-muted">End</label>
+                                    <input data-edu-index="${index}" data-edu-field="end" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.end || ""}">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs text-tt-muted">Location</label>
+                                <input data-edu-index="${index}" data-edu-field="location" type="text" class="mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:border-tt-accent focus:outline-none focus:ring-2 focus:ring-tt-accent/40" value="${item.location || ""}">
+                            </div>
+                        </div>
+                        <button type="button" class="rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-red-400 hover:text-red-300" data-remove-edu="${index}">Remove</button>
+                    </div>
+                `;
+                portfolioEducationList.appendChild(card);
+            });
+        }
+        syncHiddenList(portfolioEducationField, portfolioEducation);
+        updatePortfolioPreview();
+    }
+
     function buildInitialLinks() {
         if (!linksField || !linksField.value) {
             return;
         }
-        linksField.value.split("\\n").forEach((line) => {
+        linksField.value.split("\n").forEach((line) => {
             const trimmed = line.trim();
             if (!trimmed) {
                 return;
@@ -1018,7 +1716,7 @@
         linksField.value = links
             .filter((link) => link.url)
             .map((link) => `${link.label} | ${link.url}`)
-            .join("\\n");
+            .join("\n");
     }
 
     function renderLinks() {
@@ -1048,18 +1746,32 @@
     }
 
     function renderPreviewLinks() {
-        previewLinks.innerHTML = "";
-        if (!links.length) {
-            previewLinks.innerHTML = '<div class="preview-btn outline block px-4 py-2 text-center text-xs font-semibold">Add your first link</div>';
-            applyButtonStyle(currentButtonStyle);
-            return;
+        if (previewLinks) {
+            previewLinks.innerHTML = "";
+            if (!links.length) {
+                previewLinks.innerHTML = '<div class="preview-btn outline block w-full px-6 py-4 text-center text-base font-semibold">Add your first link</div>';
+            } else {
+                links.filter((link) => link.url).forEach((link) => {
+                    const item = document.createElement("div");
+                    item.className = `preview-btn ${currentButtonStyle} block w-full px-6 py-4 text-center text-base font-semibold`;
+                    item.textContent = link.label || "Link";
+                    previewLinks.appendChild(item);
+                });
+            }
         }
-        links.filter((link) => link.url).forEach((link) => {
-            const item = document.createElement("div");
-            item.className = `preview-btn ${currentButtonStyle} block px-4 py-2 text-center text-xs font-semibold`;
-            item.textContent = link.label || "Link";
-            previewLinks.appendChild(item);
-        });
+        if (previewPortfolioLinks) {
+            previewPortfolioLinks.innerHTML = "";
+            if (!links.length) {
+                previewPortfolioLinks.innerHTML = '<div class="rounded-full border border-white/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-tt-muted">No links yet</div>';
+            } else {
+                links.filter((link) => link.url).forEach((link) => {
+                    const item = document.createElement("div");
+                    item.className = "rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-semibold text-slate-100";
+                    item.textContent = link.label || "Link";
+                    previewPortfolioLinks.appendChild(item);
+                });
+            }
+        }
         applyButtonStyle(currentButtonStyle);
     }
 
@@ -1106,6 +1818,8 @@
         document.getElementById("preview-whatsapp")?.classList.toggle("hidden", !whatsapp && !phone);
         document.getElementById("preview-email")?.classList.toggle("hidden", !email);
         document.getElementById("preview-website")?.classList.toggle("hidden", !website);
+
+        updatePortfolioPreview();
     }
 
     function addLink() {
@@ -1166,6 +1880,160 @@
         }
     }, true);
 
+    function addTagItem(list, value, renderFn) {
+        const cleaned = (value || "").trim();
+        if (!cleaned) {
+            return;
+        }
+        if (!list.includes(cleaned)) {
+            list.push(cleaned);
+        }
+        renderFn();
+    }
+
+    addInterestButton?.addEventListener("click", () => {
+        addTagItem(portfolioInterests, portfolioInterestInput?.value, renderPortfolioInterests);
+        if (portfolioInterestInput) {
+            portfolioInterestInput.value = "";
+        }
+    });
+    portfolioInterestList?.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-remove-index]");
+        if (!target) {
+            return;
+        }
+        const index = Number(target.dataset.removeIndex);
+        if (!Number.isNaN(index)) {
+            portfolioInterests.splice(index, 1);
+            renderPortfolioInterests();
+        }
+    });
+
+    addDesignToolButton?.addEventListener("click", () => {
+        addTagItem(portfolioDesignToolItems, portfolioDesignToolInput?.value, renderDesignTools);
+        if (portfolioDesignToolInput) {
+            portfolioDesignToolInput.value = "";
+        }
+    });
+    portfolioDesignTools?.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-remove-index]");
+        if (!target) {
+            return;
+        }
+        const index = Number(target.dataset.removeIndex);
+        if (!Number.isNaN(index)) {
+            portfolioDesignToolItems.splice(index, 1);
+            renderDesignTools();
+        }
+    });
+
+    addEditingToolButton?.addEventListener("click", () => {
+        addTagItem(portfolioEditingToolItems, portfolioEditingToolInput?.value, renderEditingTools);
+        if (portfolioEditingToolInput) {
+            portfolioEditingToolInput.value = "";
+        }
+    });
+    portfolioEditingTools?.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-remove-index]");
+        if (!target) {
+            return;
+        }
+        const index = Number(target.dataset.removeIndex);
+        if (!Number.isNaN(index)) {
+            portfolioEditingToolItems.splice(index, 1);
+            renderEditingTools();
+        }
+    });
+
+    addLanguageButton?.addEventListener("click", () => {
+        addTagItem(portfolioLanguageItems, portfolioLanguageInput?.value, renderLanguages);
+        if (portfolioLanguageInput) {
+            portfolioLanguageInput.value = "";
+        }
+    });
+    portfolioLanguageList?.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-remove-index]");
+        if (!target) {
+            return;
+        }
+        const index = Number(target.dataset.removeIndex);
+        if (!Number.isNaN(index)) {
+            portfolioLanguageItems.splice(index, 1);
+            renderLanguages();
+        }
+    });
+
+    addExperienceButton?.addEventListener("click", () => {
+        portfolioExperience.push({ company: "", role: "", start: "", end: "", highlights: [] });
+        renderExperience();
+    });
+    portfolioExperienceList?.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-remove-exp]");
+        if (!target) {
+            return;
+        }
+        const index = Number(target.dataset.removeExp);
+        if (!Number.isNaN(index)) {
+            portfolioExperience.splice(index, 1);
+            renderExperience();
+        }
+    });
+    portfolioExperienceList?.addEventListener("input", (event) => {
+        const input = event.target.closest("[data-exp-index]");
+        if (!input) {
+            return;
+        }
+        const index = Number(input.dataset.expIndex);
+        const field = input.dataset.expField;
+        if (Number.isNaN(index) || !portfolioExperience[index]) {
+            return;
+        }
+        if (field === "highlights") {
+            portfolioExperience[index].highlights = input.value
+                .split("\n")
+                .map((line) => line.trim())
+                .filter(Boolean);
+        } else {
+            portfolioExperience[index][field] = input.value;
+        }
+        syncHiddenList(portfolioExperienceField, portfolioExperience);
+        updatePortfolioPreview();
+    });
+
+    addEducationButton?.addEventListener("click", () => {
+        portfolioEducation.push({ school: "", program: "", start: "", end: "", location: "" });
+        renderEducation();
+    });
+    portfolioEducationList?.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-remove-edu]");
+        if (!target) {
+            return;
+        }
+        const index = Number(target.dataset.removeEdu);
+        if (!Number.isNaN(index)) {
+            portfolioEducation.splice(index, 1);
+            renderEducation();
+        }
+    });
+    portfolioEducationList?.addEventListener("input", (event) => {
+        const input = event.target.closest("[data-edu-index]");
+        if (!input) {
+            return;
+        }
+        const index = Number(input.dataset.eduIndex);
+        const field = input.dataset.eduField;
+        if (Number.isNaN(index) || !portfolioEducation[index]) {
+            return;
+        }
+        portfolioEducation[index][field] = input.value;
+        syncHiddenList(portfolioEducationField, portfolioEducation);
+        updatePortfolioPreview();
+    });
+
+    portfolioHeadlineInput?.addEventListener("input", updatePortfolioPreview);
+    portfolioJobTypeSelect?.addEventListener("change", updatePortfolioPreview);
+    portfolioPositionInput?.addEventListener("input", updatePortfolioPreview);
+
     document.querySelectorAll("#id_full_name, #id_title, #id_company, #id_phone, #id_whatsapp, #id_email, #id_website, #id_bio")
         .forEach((el) => {
             el.addEventListener("input", updatePreview);
@@ -1173,6 +2041,9 @@
 
     if (footerTextInput && previewFooter) {
         previewFooter.textContent = footerTextInput.value || "Made by 10minal";
+    }
+    if (footerTextInput && previewPortfolioFooter) {
+        previewPortfolioFooter.textContent = footerTextInput.value || "Made by 10minal";
     }
     if (footerShowField && footerToggle) {
         footerShowField.value = footerToggle.checked ? "true" : "false";
@@ -1214,5 +2085,11 @@
     updatePreview();
     buildInitialLinks();
     renderLinks();
+    renderPortfolioInterests();
+    renderDesignTools();
+    renderEditingTools();
+    renderLanguages();
+    renderExperience();
+    renderEducation();
 </script>
 {% endblock %}
