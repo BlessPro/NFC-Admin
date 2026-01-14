@@ -7,7 +7,7 @@
             <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Mobile preview</div>
             <div class="mt-4 w-full max-w-[414px]">
                 <div class="relative w-full overflow-hidden rounded-[2.5rem] border border-tt-border bg-tt-card shadow-[0_25px_60px_rgba(0,0,0,0.55)]" style="aspect-ratio: 414 / 896;">
-                    <div id="preview-body" class="preview-body flex h-full flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-[2.2rem] p-4" style="--primary: {{ theme.primary|default:'#0d6efd' }}; --accent: {{ theme.accent|default:'#f59e0b' }}; --wallpaper: {{ theme.wallpaper|default:'linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)' }}; --text-color: {{ theme.text_color|default:'#f8fafc' }}; --muted-color: rgba(248, 250, 252, 0.7); --button-bg: {{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}; --button-text: {{ theme.button_text|default:'#0b0f14' }}; --button-radius: {{ theme.button_radius|default:'24' }}%; --button-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); --font-header: {{ theme.header_font|default:"'Sora', sans-serif" }}; --font-links: {{ theme.link_font|default:"'Sora', sans-serif" }}; --font-bio: {{ theme.bio_font|default:"'Sora', sans-serif" }}; --name-size: {{ theme.name_size|default:'1.125rem' }}; --bio-size: {{ theme.bio_size|default:'0.75rem' }};">
+                    <div id="preview-body" class="preview-body flex h-full flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-[2.2rem] p-4" style="--primary: {{ theme.primary|default:'#0d6efd' }}; --accent: {{ theme.accent|default:'#f59e0b' }}; --wallpaper: {{ theme.wallpaper|default:'linear-gradient(180deg, #0f172a 0%, #0b0f14 100%)' }}; --text-color: {{ theme.text_color|default:'#f8fafc' }}; --muted-color: rgba(248, 250, 252, 0.7); --button-bg: {{ theme.button_bg|default:theme.primary|default:'#27d3a6' }}; --button-text: {{ theme.button_text|default:'#0b0f14' }}; --button-radius: {{ theme.button_radius|default:'24' }}px; --button-shadow: 0 12px 24px rgba(0, 0, 0, 0.35); --font-header: {{ theme.header_font|default:"'Sora', sans-serif" }}; --font-links: {{ theme.link_font|default:"'Sora', sans-serif" }}; --font-bio: {{ theme.bio_font|default:"'Sora', sans-serif" }}; --name-size: {{ theme.name_size|default:'1.125rem' }}; --bio-size: {{ theme.bio_size|default:'0.75rem' }};">
                         <div id="preview-business" class="flex min-h-full flex-1 flex-col gap-4">
                             <div id="preview-header" class="relative h-32 overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5">
                                 <img id="preview-header-image" class="h-full w-full object-cover {% if not profile.logo %}hidden{% endif %}" src="{% if profile.logo %}{{ profile.logo.url }}{% endif %}" alt="Header" />
@@ -176,7 +176,7 @@
             position: relative;
             background: linear-gradient(90deg, var(--button-bg), var(--accent), var(--primary));
             color: var(--button-text);
-            border-radius: 999px;
+            border-radius: var(--button-radius);
             box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
             display: flex;
             align-items: center;
@@ -244,6 +244,29 @@
                 <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-tt-border bg-tt-card/60 px-4 py-3 text-xs text-tt-muted">
                     <span>Need to change your password?</span>
                     <a class="rounded-full border border-tt-border px-3 py-1 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/client/password/">Update password</a>
+                </div>
+            </div>
+
+            <div class="rounded-2xl border border-tt-border bg-tt-panel/80 p-6">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <h3 class="text-sm font-semibold uppercase tracking-[0.2em] text-tt-muted">QR codes</h3>
+                    <span class="text-xs text-tt-muted">Share quick actions</span>
+                </div>
+                <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                    <div class="rounded-2xl border border-tt-border bg-tt-card/70 p-4">
+                        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Call</div>
+                        {% if content.phone or content.whatsapp %}
+                            <img class="mt-3 w-full max-w-[180px] rounded-xl border border-tt-border bg-white p-2" src="/c/{{ profile.code }}/qr?type=call" alt="Call QR" loading="lazy" />
+                            <a class="mt-3 inline-flex items-center justify-center rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/c/{{ profile.code }}/qr?type=call" download="call-{{ profile.code }}.png">Download PNG</a>
+                        {% else %}
+                            <div class="mt-3 rounded-xl border border-dashed border-tt-border px-3 py-6 text-xs text-tt-muted">Add a phone or WhatsApp number to enable this QR.</div>
+                        {% endif %}
+                    </div>
+                    <div class="rounded-2xl border border-tt-border bg-tt-card/70 p-4">
+                        <div class="text-xs uppercase tracking-[0.2em] text-tt-muted">Save contact</div>
+                        <img class="mt-3 w-full max-w-[180px] rounded-xl border border-tt-border bg-white p-2" src="/c/{{ profile.code }}/qr?type=vcard" alt="Save contact QR" loading="lazy" />
+                        <a class="mt-3 inline-flex items-center justify-center rounded-full border border-tt-border px-4 py-2 text-xs font-semibold text-slate-100 hover:border-tt-accent hover:text-tt-accent" href="/c/{{ profile.code }}/qr?type=vcard" download="contact-{{ profile.code }}.png">Download PNG</a>
+                    </div>
                 </div>
             </div>
 
@@ -425,13 +448,13 @@
                                 <div class="absolute bottom-3 left-3 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold text-white">Agate</div>
                             </div>
                         </button>
-                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#7C3AED" data-accent="#F472B6" data-text="#F8FAFC" data-wallpaper="#7C3AED" data-button-bg="#F472B6" data-button-text="#1f0a3d" data-button-style="block" data-button-radius="12" data-button-shadow="none" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Sora', sans-serif">
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#7C3AED" data-accent="#F472B6" data-text="#F8FAFC" data-wallpaper="#7C3AED" data-button-bg="#F472B6" data-button-text="#1f0a3d" data-button-style="block" data-button-radius="16" data-button-shadow="none" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Sora', sans-serif">
                             <div class="relative h-24 rounded-xl bg-[#7C3AED]">
                                 <div class="absolute inset-x-6 bottom-6 h-6 rounded-md border-2 border-[#0b0f14] bg-[#F472B6]"></div>
                                 <div class="absolute bottom-3 left-3 rounded-full bg-black/20 px-3 py-1 text-xs font-semibold text-white">Blocks</div>
                             </div>
                         </button>
-                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#EC4899" data-accent="#F87171" data-text="#FFFFFF" data-wallpaper="linear-gradient(135deg, #2e1a57 0%, #7a2a7e 30%, #f29f6b 55%, #6aa5c8 75%, #2d2b4f 100%)" data-button-bg="#FB923C" data-button-text="#FFFFFF" data-button-style="rise" data-button-radius="100" data-button-shadow="subtle" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Sora', sans-serif">
+                        <button type="button" class="theme-card rounded-2xl border border-tt-border p-3 text-left" data-theme-card data-primary="#EC4899" data-accent="#F87171" data-text="#FFFFFF" data-wallpaper="linear-gradient(135deg, #2e1a57 0%, #7a2a7e 30%, #f29f6b 55%, #6aa5c8 75%, #2d2b4f 100%)" data-button-bg="#FB923C" data-button-text="#FFFFFF" data-button-style="rise" data-button-radius="28" data-button-shadow="subtle" data-link-font="'Space Grotesk', sans-serif" data-bio-font="'Sora', sans-serif">
                             <div class="relative h-24 overflow-hidden rounded-xl">
                                 <div class="absolute inset-0 bg-[conic-gradient(from_140deg_at_20%_20%,#6a5adf,#d06fa6,#f0b06e,#5fa5c9,#2d2b4f,#6a5adf)]"></div>
                                 <div class="absolute inset-x-6 bottom-6 h-6 rounded-full border border-white/20 bg-white/10"></div>
@@ -595,9 +618,9 @@
                         <div>
                             <label class="flex items-center justify-between text-sm text-tt-muted">
                                 Corners
-                                <span id="button-radius-value" class="text-xs text-slate-100">100%</span>
+                                <span id="button-radius-value" class="text-xs text-slate-100">{{ theme.button_radius|default:'24' }}px</span>
                             </label>
-                            <input id="button-radius" type="range" min="0" max="100" value="{{ theme.button_radius|default:'24' }}" class="mt-2 w-full" />
+                            <input id="button-radius" type="range" min="0" max="32" value="{{ theme.button_radius|default:'24' }}" class="mt-2 w-full" />
                         </div>
                         <div>
                             <label class="text-sm text-tt-muted">Shadow</label>
@@ -1158,8 +1181,8 @@
             }
             if (buttonRadius && buttonRadiusInput && buttonRadiusValue) {
                 buttonRadiusInput.value = buttonRadius;
-                buttonRadiusValue.textContent = `${buttonRadius}%`;
-                previewBody?.style.setProperty("--button-radius", `${buttonRadius}%`);
+                buttonRadiusValue.textContent = `${buttonRadius}px`;
+                previewBody?.style.setProperty("--button-radius", `${buttonRadius}px`);
                 if (buttonRadiusField) {
                     buttonRadiusField.value = buttonRadius;
                 }
@@ -1274,8 +1297,8 @@
     applyButtonStyle(currentButtonStyle);
     setButtonShadow(buttonShadowField?.value || "subtle");
     if (buttonRadiusInput && buttonRadiusValue) {
-        buttonRadiusValue.textContent = `${buttonRadiusInput.value}%`;
-        previewBody?.style.setProperty("--button-radius", `${buttonRadiusInput.value}%`);
+        buttonRadiusValue.textContent = `${buttonRadiusInput.value}px`;
+        previewBody?.style.setProperty("--button-radius", `${buttonRadiusInput.value}px`);
         if (buttonRadiusField) {
             buttonRadiusField.value = buttonRadiusInput.value;
         }
@@ -1290,9 +1313,9 @@
     buttonRadiusInput?.addEventListener("input", () => {
         const value = buttonRadiusInput.value;
         if (buttonRadiusValue) {
-            buttonRadiusValue.textContent = `${value}%`;
+            buttonRadiusValue.textContent = `${value}px`;
         }
-        previewBody?.style.setProperty("--button-radius", `${value}%`);
+        previewBody?.style.setProperty("--button-radius", `${value}px`);
         if (buttonRadiusField) {
             buttonRadiusField.value = value;
         }

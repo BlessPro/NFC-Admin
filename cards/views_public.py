@@ -1,12 +1,15 @@
-﻿import uuid
+import io
+import uuid
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views.generic import FormView, TemplateView
+import qrcode
+
 
 from .constants import PACKAGES
 from .forms import OrderCreateForm
@@ -96,12 +99,44 @@ def _build_vcard(profile):
     return "\r\n".join(lines)
 
 
+def _build_qr_png(data):
+    qr = qrcode.QRCode(version=1, box_size=6, border=2)
+    qr.add_data(data)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
 def profile_vcard(request, code):
     profile = get_object_or_404(Profile, code=code)
     vcard = _build_vcard(profile)
     filename = profile.slug or profile.code
     response = HttpResponse(vcard, content_type="text/vcard; charset=utf-8")
     response["Content-Disposition"] = f"attachment; filename=\"{filename}.vcf\""
+    return response
+
+
+def profile_qr(request, code):
+    profile = get_object_or_404(Profile, code=code)
+    qr_type = (request.GET.get("type") or "vcard").lower()
+    content = profile.content_json or {}
+    if qr_type == "call":
+        phone = content.get("phone") or content.get("whatsapp")
+        if not phone:
+            return HttpResponseBadRequest("phone-missing")
+        data = f"tel:{phone}"
+    elif qr_type in {"vcard", "contact", "save"}:
+        data = _build_vcard(profile)
+    elif qr_type == "url":
+        data = request.build_absolute_uri(reverse("profile-by-code", args=[profile.code]))
+    else:
+        return HttpResponseBadRequest("invalid-type")
+
+    png = _build_qr_png(data)
+    response = HttpResponse(png, content_type="image/png")
+    response["Cache-Control"] = "no-store"
     return response
 
 
